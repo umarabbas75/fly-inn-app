@@ -56,7 +56,7 @@ export async function proxyToBackend(
         cache: "no-store", // Don't cache authenticated requests
       }
     );
-
+    console.log("endpoint", `${process.env.NEXT_PUBLIC_API_URI}${endpoint}`);
     // If unauthorized, session may be invalid
     if (response.status === 401) {
       return Response.json(
