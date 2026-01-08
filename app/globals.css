@@ -1,0 +1,831 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+@tailwind utilities;
+
+/* Typography - Apply Poppins to headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-poppins);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Optional: Specific heading styles */
+h1 {
+  font-weight: 700;
+}
+
+h2 {
+  font-weight: 600;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+}
+
+/* Apply Inter to body text (already default) */
+body {
+  font-family: var(--font-inter);
+}
+
+/* Utility classes for font families */
+.font-heading {
+  font-family: var(--font-poppins) !important;
+}
+
+.font-body {
+  font-family: var(--font-inter) !important;
+}
+
+/* REMOVE THIS LINE: @import "tailwindcss"; */
+/* CHANGE THESE LINES: */
+/* Explicitly import theme and utilities, omitting preflight.css */
+@layer theme, base, components, utilities; /* Ensure 'base' is declared if you intend to use it */
+
+@import "tailwindcss/theme.css" layer(theme);
+/* @import "tailwindcss/preflight.css" layer(base);  <-- THIS IS THE LINE TO REMOVE OR COMMENT OUT */
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Ensure Ant Design styles are not affected by Tailwind's layer system */
+/* Ant Design components should render outside CSS layers to avoid stacking context issues */
+
+:root {
+  --background: #ffffff;
+  --foreground: #4a5565;
+  --primary: #af2322;
+  --secondary: #bab9b9;
+  --font-inter: "Inter", system-ui, -apple-system, sans-serif;
+  --font-poppins: "Poppins", system-ui, -apple-system, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --primary: #af2322;
+    --secondary: #808080;
+  }
+}
+
+@layer base {
+  a {
+    text-decoration: none;
+  }
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  img {
+    height: auto;
+    max-width: 100%;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* Remove default margin, padding */
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Set core body defaults */
+  body {
+    min-height: 100vh;
+    line-height: 1.5;
+    font-family: system-ui, sans-serif;
+    background-color: #fff;
+    color: #000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Remove list styles on ul, ol elements with a list role */
+  ul[role="list"],
+  ol[role="list"] {
+    list-style: none;
+  }
+
+  /* A elements that don't have a class get default styles */
+  a:not([class]) {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Make images easier to work with */
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Inherit fonts for inputs and buttons */
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  /* Remove all animations and transitions for people that prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Normalize vertical alignment */
+  button,
+  input {
+    vertical-align: middle;
+  }
+
+  /* Set default cursor for buttons */
+  button {
+    cursor: pointer;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  .app-container {
+    @apply max-w-[1400px] m-auto w-full px-4 md:px-8;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.custom-date-cell {
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-date-cell.unavailable {
+  background-color: #ff4d4f;
+  color: white;
+  font-weight: bold;
+}
+.ant-picker-calendar-date:has(.unavailable-parent) {
+  background-color: #ffcccc !important;
+}
+/* .gm-style-iw-chr {
+  display: none;
+}
+.gm-style-iw.gm-style-iw-c {
+  padding-left: 0px;
+}
+.gm-style-iw-d {
+  padding-right: 0px;
+} */
+
+.gm-style-iw-d {
+  max-height: 326px !important;
+}
+.gm-style-iw {
+  border-radius: 16px !important;
+}
+
+.gm-style-iw-tc {
+  display: none !important;
+}
+
+.gm-style-iw-chr {
+  display: none !important;
+}
+
+.gm-style-iw-d {
+  overflow: hidden !important;
+}
+
+.gm-style-iw-c {
+  padding: 0 !important;
+}
+
+:where(
+    .css-dev-only-do-not-override-oxhie
+  ).ant-picker-calendar.ant-picker-calendar-full
+  .ant-picker-calendar-date {
+  margin: 0px;
+}
+
+/* .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-calendar-date,
+:where(
+    .css-dev-only-do-not-override-oxhie
+  ).ant-picker-calendar.ant-picker-calendar-full
+  .ant-picker-cell-in-view.ant-picker-cell-selected
+  .ant-picker-calendar-date-today {
+  background: #ffffff;
+} */
+
+/* Force inline mode */
+/* .custom-range-dropdown {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  width: 100%;
+} */
+
+/* Remove input box */
+/* .ant-picker-input {
+  display: none;
+} */
+
+input[type="tel"]:focus {
+  outline: none;
+}
+input[type="tel"] {
+  border: 0;
+}
+
+.ql-container.ql-snow {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  min-height: 200px;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-selected {
+  background: white;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: 0;
+}
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-calendar-date {
+  background: white;
+}
+
+.ant-picker-calendar-date {
+  margin: 0px;
+}
+
+/* Remove border-radius from calendar cells */
+.ant-picker-cell-inner,
+.ant-picker-calendar-date {
+  border-radius: 0 !important;
+}
+
+/* Fix for Ant Design Image Preview Controls */
+.ant-image-preview-root {
+  z-index: 99999 !important;
+}
+
+.ant-image-preview-mask {
+  z-index: 99990 !important;
+  background-color: rgba(0, 0, 0, 0.65) !important;
+  opacity: 1 !important;
+}
+
+.ant-image-preview-wrap {
+  z-index: 99995 !important;
+  pointer-events: auto !important;
+}
+
+.ant-image-preview-img-wrapper {
+  z-index: 99996 !important;
+  pointer-events: auto !important;
+}
+
+.ant-image-preview-operations {
+  z-index: 99998 !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  background: rgba(0, 0, 0, 0.1) !important;
+  position: relative !important;
+}
+
+.ant-image-preview-operations-wrapper {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  z-index: 99998 !important;
+}
+
+.ant-image-preview-operations .ant-image-preview-operations-operation {
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  z-index: 99999 !important;
+  position: relative !important;
+}
+
+.ant-image-preview-close {
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 48px !important;
+  height: 48px !important;
+  font-size: 18px !important;
+  cursor: pointer !important;
+}
+
+.ant-image-preview-close:hover {
+  color: rgba(255, 255, 255, 1) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.ant-image-preview-close .anticon {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Ensure all interactive elements in preview are clickable */
+.ant-image-preview-operations button,
+.ant-image-preview-switch-left,
+.ant-image-preview-switch-right {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 99999 !important;
+  position: relative !important;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* React Modal Styles */
+.react-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.react-modal-content {
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  outline: none;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Fix for Ant Design Modals, Drawers, and Tooltips - Ensure proper z-index and pointer events */
+/* This fixes the CSS layer stacking context conflict between Tailwind v4 and Ant Design */
+.ant-modal-mask,
+.ant-modal-wrap {
+  z-index: 1000 !important;
+  pointer-events: auto !important;
+  position: fixed !important;
+}
+
+.ant-modal {
+  z-index: 1001 !important;
+  pointer-events: auto !important;
+}
+
+.ant-modal-content {
+  pointer-events: auto !important;
+}
+
+.ant-modal-close,
+.ant-modal-close-x {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 1002 !important;
+}
+
+.ant-drawer-mask,
+.ant-drawer-wrap {
+  z-index: 1000 !important;
+  pointer-events: auto !important;
+  position: fixed !important;
+}
+
+.ant-drawer {
+  z-index: 1001 !important;
+  pointer-events: auto !important;
+}
+
+.ant-drawer-content {
+  pointer-events: auto !important;
+}
+
+.ant-drawer-close,
+.ant-drawer-close-x {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 1002 !important;
+}
+
+.ant-tooltip {
+  z-index: 1060 !important;
+  pointer-events: none !important;
+}
+
+.ant-tooltip-inner {
+  pointer-events: auto !important;
+}
+
+/* Ensure Ant Design portal containers don't get blocked by CSS layers */
+.ant-modal-root,
+.ant-drawer-root {
+  position: relative;
+  z-index: 1000 !important;
+}
+
+/* Map Swiper Pagination Styles - Subtle and compact */
+.map-swiper .swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.5) !important;
+  width: 4px !important;
+  height: 4px !important;
+  opacity: 1 !important;
+  margin: 0 2px !important;
+  transition: all 0.2s ease !important;
+}
+
+.map-swiper .swiper-pagination-bullet-active {
+  background: rgba(255, 255, 255, 1) !important;
+  width: 12px !important;
+  height: 4px !important;
+  border-radius: 2px !important;
+}
+
+.map-swiper .swiper-pagination {
+  bottom: 4px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+}
+
+/* Map Swiper Navigation Styles */
+.map-swiper .swiper-button-next,
+.map-swiper .swiper-button-prev {
+  width: 24px !important;
+  height: 24px !important;
+  margin-top: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(4px) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.2s ease !important;
+}
+
+.map-swiper .swiper-button-next:hover,
+.map-swiper .swiper-button-prev:hover {
+  background: rgba(255, 255, 255, 1) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.map-swiper .swiper-button-next {
+  right: 4px !important;
+}
+
+.map-swiper .swiper-button-prev {
+  left: 4px !important;
+}
+
+.map-swiper .swiper-button-next::after,
+.map-swiper .swiper-button-prev::after {
+  font-size: 10px !important;
+  font-weight: bold !important;
+  color: #333 !important;
+}
+
+/* ========================================
+   PRINT STYLES - Stay Details Page
+   ======================================== */
+@media print {
+  /* Force white background and dark text */
+  body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide non-essential elements */
+  header,
+  footer,
+  nav,
+  .print-hidden {
+    display: none !important;
+  }
+
+  /* Remove shadows and borders for cleaner print */
+  * {
+    box-shadow: none !important;
+  }
+
+  /* Ensure proper page breaks */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+  }
+
+  img,
+  table,
+  figure {
+    page-break-inside: avoid;
+  }
+
+  /* Print-only elements */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Screen-only elements */
+  .screen-only {
+    display: none !important;
+  }
+
+  /* Hide icons in print */
+  .print-hide-icon {
+    display: none !important;
+  }
+
+  /* Show text labels in print */
+  .print-show-label {
+    display: inline !important;
+  }
+
+  /* Force single column layout */
+  .print-full-width {
+    width: 100% !important;
+    grid-column: span 1 !important;
+  }
+
+  /* Reset grid for print */
+  .print-block {
+    display: block !important;
+  }
+
+  /* Ant Design specific print fixes */
+  .ant-collapse-content {
+    display: block !important;
+    height: auto !important;
+  }
+
+  .ant-collapse-content-hidden {
+    display: block !important;
+    height: auto !important;
+    visibility: visible !important;
+  }
+
+  /* Hide ant collapse expand icons */
+  .ant-collapse-expand-icon {
+    display: none !important;
+  }
+
+  /* Remove card shadows and simplify borders */
+  .ant-card {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  /* Button removal in print */
+  .ant-btn {
+    display: none !important;
+  }
+
+  /* Keep text buttons visible but styled as text */
+  .ant-btn-link {
+    display: inline !important;
+    border: none !important;
+    padding: 0 !important;
+    color: inherit !important;
+  }
+
+  /* Hide dropdowns and interactive elements */
+  .ant-dropdown-trigger,
+  .ant-select,
+  .ant-input {
+    display: none !important;
+  }
+
+  /* Simplify tags */
+  .ant-tag {
+    border: 1px solid #d9d9d9 !important;
+    background: white !important;
+  }
+
+  /* Hide tooltips */
+  .ant-tooltip {
+    display: none !important;
+  }
+
+  /* Hero section - MUST come first with high specificity */
+  .hero-images-section .print-hero-image {
+    max-width: 100% !important;
+    max-height: 400px !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+  }
+
+  /* Hero thumbnails */
+  .hero-images-section .print-thumbnail {
+    max-width: 150px !important;
+    max-height: 100px !important;
+    width: 150px !important;
+    height: 100px !important;
+    object-fit: cover !important;
+  }
+
+  /* Ensure Google Maps renders correctly in print */
+  .gm-style,
+  .gm-style * {
+    max-width: none !important;
+    max-height: none !important;
+  }
+
+  /* Hide large image galleries in print, show thumbnails */
+  .image-gallery-large {
+    display: none !important;
+  }
+
+  /* Container adjustments for print */
+  .app-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Hide Font Awesome icons in print */
+  i.fa,
+  i.fas,
+  i.far,
+  i.fab,
+  [class^="fa-"],
+  [class*=" fa-"] {
+    display: none !important;
+  }
+
+  /* Hide React Icons in print */
+  svg.print-hide-icon,
+  .print-hide-icon svg {
+    display: none !important;
+  }
+}
+
+/* Print-only class (hidden on screen) */
+.print-only {
+  display: none;
+}
+
+/* Screen-only class (visible on screen, hidden in print - via media query above) */
+.screen-only {
+  display: block;
+}
+
+/* Google Translate Styles */
+.google-translate-container {
+  display: inline-block;
+}
+
+.google-translate-container .goog-te-gadget {
+  font-family: inherit !important;
+  font-size: 0 !important;
+}
+
+.google-translate-container .goog-te-gadget-simple {
+  background-color: transparent !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 9999px !important;
+  padding: 6px 12px !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  transition: all 0.2s !important;
+}
+
+.google-translate-container .goog-te-gadget-simple:hover {
+  border-color: #d1d5db !important;
+  background-color: #f9fafb !important;
+}
+
+.google-translate-container .goog-te-gadget-simple .goog-te-menu-value {
+  color: #374151 !important;
+  font-size: 13px !important;
+}
+
+.google-translate-container .goog-te-gadget-simple .goog-te-menu-value span:first-child {
+  display: none !important;
+}
+
+.google-translate-container .goog-te-gadget-simple img {
+  display: none !important;
+}
+
+.google-translate-container .goog-te-gadget-simple .goog-te-menu-value span[style] {
+  border: none !important;
+  margin-left: 4px !important;
+}
+
+/* Hide Google Translate banner */
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+/* Style the dropdown menu */
+.goog-te-menu-frame {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Hide in print */
+@media print {
+  .google-translate-container,
+  .goog-te-gadget,
+  .skiptranslate {
+    display: none !important;
+  }
+}

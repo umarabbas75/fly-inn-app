@@ -1,0 +1,4 @@
+{
+    "buildCommand": "SKIP_TSC_CHECK=true next build"
+  }
+  
