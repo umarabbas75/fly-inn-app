@@ -475,14 +475,18 @@ const Privacy = () => {
                         </p>
                   <p className="mt-4">
                     <span className="text-gray-600">Email: </span>
-                    <EmailLink email="PIC@fly-inn.com">
-                            PIC@fly-inn.com
+                    <EmailLink email="PIC@Fly-Inn.com">
+                            PIC@Fly-Inn.com
                     </EmailLink>
                   </p>
                   <p className="mt-2">
+                    <span className="text-gray-600">Toll-Free: </span>
+                    <span className="font-medium">833-I-Fly-Inn (833-435-9466)</span>
+                  </p>
+                  <p className="mt-2">
                     <span className="text-gray-600">Phone: </span>
-                    <span className="font-medium">321-435-9466</span>
-                        </p>
+                    <span className="font-medium">321-I-Fly-Inn (321-435-9466)</span>
+                  </p>
                       </div>
               </div>
             </div>

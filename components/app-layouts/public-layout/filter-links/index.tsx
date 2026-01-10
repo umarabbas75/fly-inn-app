@@ -1,13 +1,7 @@
 "use client";
 
 import {
-  CarOutlined,
-  CompassOutlined,
-  EnvironmentOutlined,
   HomeOutlined,
-  ApartmentOutlined,
-  StarOutlined,
-  BankOutlined,
   ShopOutlined,
   SearchOutlined,
   CloseOutlined,
@@ -21,7 +15,6 @@ import React, {
   useEffect,
 } from "react";
 import FiltersModal from "./components/filter-modal";
-import { MdFlight } from "react-icons/md";
 import { BUSINESS_SUBTYPES } from "@/constants/business";
 import { usePathname } from "next/navigation";
 
@@ -102,7 +95,12 @@ const DISTANCE_OPTIONS = [
   { value: 1, label: "Within 1 Mile", color: "#eab308", bgLight: "#fef9c3" }, // Yellow
   { value: 3, label: "Within 3 Miles", color: "#ef4444", bgLight: "#fee2e2" }, // Red
   { value: 7, label: "Within 7 Miles", color: "#f97316", bgLight: "#ffedd5" }, // Orange
-  { value: 8, label: "Over 7 Miles away", color: "#06b6d4", bgLight: "#cffafe" }, // Cyan
+  {
+    value: 8,
+    label: "Over 7 Miles away",
+    color: "#06b6d4",
+    bgLight: "#cffafe",
+  }, // Cyan
 ] as const;
 
 const DistanceFromRunwayFilter = () => {
@@ -229,69 +227,15 @@ const FilterLinks = () => {
   const filterItems = [
     {
       icon: <HomeOutlined />,
-      label: "Stays",
+      label: "Vacation Rentals",
       value: "stays" as FilterType,
       enabled: true,
     },
     {
       icon: <ShopOutlined />,
-      label: "Business",
+      label: "Directory",
       value: "business" as FilterType,
       enabled: true,
-    },
-    {
-      icon: <CarOutlined />,
-      label: "Car Rentals",
-      value: "stays" as FilterType,
-      enabled: false,
-    },
-    {
-      icon: <EnvironmentOutlined />,
-      label: "Attractions",
-      value: "stays" as FilterType,
-      enabled: false,
-    },
-    {
-      icon: <MdFlight />,
-      label: "Flights",
-      value: "stays" as FilterType,
-      enabled: false,
-    },
-    {
-      icon: <ApartmentOutlined />,
-      label: "Vacation Homes",
-      value: "stays" as FilterType,
-      enabled: false,
-    },
-    {
-      icon: <ApartmentOutlined />,
-      label: "Apartments",
-      value: "stays" as FilterType,
-      enabled: false,
-    },
-    {
-      icon: <StarOutlined />,
-      label: "Resorts",
-      value: "stays" as FilterType,
-      enabled: false,
-    },
-    {
-      icon: <HomeOutlined />,
-      label: "Villas",
-      value: "stays" as FilterType,
-      enabled: false,
-    },
-    {
-      icon: <BankOutlined />,
-      label: "Hostels",
-      value: "stays" as FilterType,
-      enabled: false,
-    },
-    {
-      icon: <BankOutlined />,
-      label: "B&Bs",
-      value: "stays" as FilterType,
-      enabled: false,
     },
   ];
 
@@ -427,7 +371,6 @@ const BusinessFilterLinks = () => {
       }
     }
   }, [selectedBusinessSubtype]);
-  console.log({ filteredSubtypes });
   // Don't render if business filter is not selected
   if (selectedFilter !== "business") return null;
 
@@ -527,14 +470,6 @@ const BusinessFilterLinks = () => {
             </div>
           </div>
         </div>
-
-        {/* Results count when filtered */}
-        {/* {searchQuery && filteredSubtypes.length > 0 && (
-          <div className="mt-2 text-xs text-gray-500">
-            Showing {filteredSubtypes.length} of {allSubtypes.length} business
-            types
-          </div>
-        )} */}
       </div>
     </div>
   );

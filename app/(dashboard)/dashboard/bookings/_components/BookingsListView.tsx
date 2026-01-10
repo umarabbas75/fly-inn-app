@@ -32,12 +32,6 @@ import {
 import { useApiGet, useApiMutation } from "@/http-service";
 import { useApp } from "@/providers/AppMessageProvider";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-
-// Extend dayjs with timezone support
-dayjs.extend(utc);
-dayjs.extend(timezone);
 import {
   BookingStatus,
   PaymentStatus,
@@ -328,37 +322,6 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
     declineBooking({});
   };
 
-  // Complete booking mutation (guest, host, or admin)
-  const { mutate: completeBooking, isPending: completingBooking } =
-    useApiMutation({
-      endpoint: `/api/bookings/${selectedBooking?.id}/complete`,
-      method: "post",
-      config: {
-        onSuccess: () => {
-          appMessage.success("Booking marked as completed successfully!");
-          setSelectedBooking(null);
-          refetch();
-        },
-        onError: (err: any) => {
-          appMessage.error(
-            err?.response?.data?.message || "Failed to complete booking"
-          );
-        },
-      },
-    });
-
-  const handleCompleteBooking = (booking: Booking) => {
-    if (
-      !confirm(
-        "Are you sure you want to mark this booking as completed? This action cannot be undone."
-      )
-    ) {
-      return;
-    }
-    setSelectedBooking(booking);
-    completeBooking({});
-  };
-
   const handleViewDetails = (booking: Booking) => {
     // Navigate to the appropriate detail page based on view mode
     switch (viewMode) {
@@ -415,34 +378,6 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       return [snapshot.city, snapshot.state].filter(Boolean).join(", ");
     }
     return "";
-  };
-
-  // Check if checkout datetime has passed
-  const hasCheckoutPassed = (booking: Booking): boolean => {
-    if (!booking.departure_date) return false;
-
-    const snapshot = parseListingSnapshot(booking.listing_snapshot);
-    const propertyTimezone =
-      (booking.stay as any)?.timezone ||
-      snapshot?.timezone ||
-      "America/New_York";
-
-    const now = dayjs().tz(propertyTimezone);
-
-    // Get checkout time (default to 11:00:00 if not specified)
-    const checkOutTime =
-      (booking.stay as any)?.check_out_before ||
-      snapshot?.check_out_before ||
-      "11:00:00";
-
-    // Combine departure date + checkout time in property's timezone
-    const checkOutDateTime = dayjs.tz(
-      `${booking.departure_date} ${checkOutTime}`,
-      propertyTimezone
-    );
-
-    // Return true if checkout datetime has passed
-    return now.isAfter(checkOutDateTime);
   };
 
   const columns = useMemo(
@@ -735,23 +670,6 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
                 onClick: () => handleDeclineBooking(record),
               }
             );
-          }
-
-          // Add complete booking option for confirmed bookings where checkout has passed
-          if (
-            record.status === BookingStatus.CONFIRMED &&
-            hasCheckoutPassed(record)
-          ) {
-            menuItems.push({
-              key: "complete",
-              label: (
-                <Space className="text-green-600">
-                  <CheckCircleOutlined />
-                  Mark as Completed
-                </Space>
-              ),
-              onClick: () => handleCompleteBooking(record),
-            });
           }
 
           const menuItemClassName =

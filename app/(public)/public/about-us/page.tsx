@@ -10,19 +10,25 @@ import "swiper/css/pagination";
 import "swiper/css/free-mode";
 import { Pagination, FreeMode } from "swiper/modules";
 
-// Publication logos with links
+// Publication logos with links - matching magazine-endorsements-section order
 const publications = [
   {
     href: "https://www.flyingmag.com/destinations/ga-flight-planning-website-takes-the-guesswork-out-of-finding-next-destination/",
     src: "/flying-logo.png",
     alt: "Flying Magazine",
-    invert: false,
+    invert: true, // White logo, needs inversion for visibility on red
   },
   {
     href: "https://www.barnstormers.com/",
     src: "/barnstormers-logo.png",
     alt: "Barnstormers",
     invert: false,
+  },
+  {
+    href: "https://robbreport.com/motors/aviation/gallery/best-fly-ins-north-america-1235603388/rr-mv-requests-050724-3/",
+    src: "/robb-report-logo-white.png",
+    alt: "Robb Report",
+    invert: true, // White logo, needs inversion for visibility on red
   },
   {
     href: "https://generalaviationnews.com/2024/04/08/a-different-kind-of-fly-in-2/",
@@ -34,13 +40,7 @@ const publications = [
     href: "https://www.piperflyer.com/component/fileman/file/0624_PiperFlyer.pdf.html?routed=1&container=fileman-attachments",
     src: "/piper-logo.png",
     alt: "Piper Flyer",
-    invert: false,
-  },
-  {
-    href: "https://robbreport.com/motors/aviation/gallery/best-fly-ins-north-america-1235603388/rr-mv-requests-050724-3/",
-    src: "/robb-report-logo-white.png",
-    alt: "Robb Report",
-    invert: true,
+    invert: true, // White logo, needs inversion for visibility on red
   },
 ];
 
@@ -51,9 +51,6 @@ const FindUsImage = () => {
       <div className="app-container">
         {/* Header - Modern style */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <p className="text-xs md:text-sm font-semibold tracking-[0.2em] uppercase text-gray-500 mb-4">
-            Featured In
-          </p>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             On Everyone's Radar
           </h2>
@@ -62,52 +59,57 @@ const FindUsImage = () => {
           </p>
         </div>
 
-        {/* Publication logos - Modern grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
-          {publications.map((pub, index) => (
-            <Link
-              key={index}
-              href={pub.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative"
-            >
-              <div className="relative bg-white border border-gray-100 rounded-2xl p-6 md:p-8 h-[100px] md:h-[120px] flex items-center justify-center transition-all duration-300 hover:border-[#AF2322]/30 hover:shadow-xl hover:shadow-[#AF2322]/10 hover:-translate-y-1">
-                {/* Hover gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#AF2322]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
+        {/* Publication logos - Red background section */}
+        <div
+          className="rounded-2xl p-8 md:p-12"
+          style={{
+            background: "linear-gradient(90deg, #C1272D 0%, #7B1F24 100%)",
+          }}
+        >
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
+            {publications.map((pub, index) => (
+              <Link
+                key={index}
+                href={pub.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative"
+              >
+                <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 md:p-8 h-[100px] md:h-[120px] flex items-center justify-center transition-all duration-300 hover:bg-white/20 hover:border-white/40 hover:shadow-xl hover:-translate-y-1">
+                  <img
+                    src={pub.src}
+                    alt={pub.alt}
+                    className="max-w-[120px] md:max-w-[140px] max-h-[40px] md:max-h-[50px] object-contain transition-all duration-300 group-hover:scale-110"
+                    style={{
+                      filter: pub.invert ? "brightness(0)" : "none",
+                    }}
+                  />
 
-                <img
-                  src={pub.src}
-                  alt={pub.alt}
-                  className={`max-w-[120px] md:max-w-[140px] max-h-[40px] md:max-h-[50px] object-contain transition-all duration-300 group-hover:scale-110 ${
-                    pub.invert ? "filter invert" : ""
-                  }`}
-                />
-
-                {/* External link indicator */}
-                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <svg
-                    className="w-4 h-4 text-[#AF2322]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
+                  {/* External link indicator */}
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <svg
+                      className="w-4 h-4 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
 
-              {/* Publication name on hover */}
-              <p className="text-center text-xs text-gray-500 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 font-medium">
-                {pub.alt}
-              </p>
-            </Link>
-          ))}
+                {/* Publication name on hover */}
+                <p className="text-center text-xs text-white/80 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 font-medium">
+                  {pub.alt}
+                </p>
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Bottom decoration line */}
@@ -187,8 +189,8 @@ export default function AboutPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Video Hero Section */}
       <section className="relative h-[70vh] md:h-screen">
-        <div className="absolute inset-0 bg-black/20 z-10"></div>
-        <div className="relative w-full h-full">
+        <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none"></div>
+        <div className="relative w-full h-full z-20">
           <iframe
             ref={iframeRef}
             className="w-full h-full"

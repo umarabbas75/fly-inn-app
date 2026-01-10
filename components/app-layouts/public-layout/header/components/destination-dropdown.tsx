@@ -107,7 +107,19 @@ const DestinationDropdown = () => {
           {isLoading ? (
             <div className="text-gray-400 p-2">Loading cities...</div>
           ) : error ? (
-            <div className="text-red-400 p-2">Failed to load cities</div>
+            <div className="p-2">
+              <p className="text-sm text-red-600 mb-2">
+                {(error as any)?.response?.data?.message ||
+                  (error as any)?.message ||
+                  "Unable to load cities. Please try again."}
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="text-xs text-red-600 hover:text-red-800 underline"
+              >
+                Retry
+              </button>
+            </div>
           ) : filteredCities.length > 0 ? (
             filteredCities.map((city, index) => (
               <div

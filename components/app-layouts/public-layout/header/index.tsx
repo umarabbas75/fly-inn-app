@@ -52,12 +52,12 @@ export default function Header() {
             <GoogleTranslate />
           </div> */}
 
-          <Link href="/public/become-a-host/list-space">
+          <Link href="/auth/signup">
             <Button
               type="link"
               className="text-sm font-semibold hidden md:block text-black"
             >
-              Become a host
+              Join Free
             </Button>
           </Link>
 

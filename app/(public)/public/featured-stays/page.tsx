@@ -305,8 +305,9 @@ export default function FeaturedStaysPage() {
           <div>
             <h3 className="mb-2 font-semibold">Contact Us</h3>
             <ul className="space-y-1 text-sm text-gray-600">
-              <li>P.O Box 270-439, Fruitland, UTAH</li>
-              <li>833-111-222-333</li>
+              <li>P.O. Box 270439, Fruitland, UT 84027</li>
+              <li>Toll-Free: 833-I-Fly-Inn (833-435-9466)</li>
+              <li>Phone: 321-I-Fly-Inn (321-435-9466)</li>
               <li>PIC@Fly-Inn.com</li>
             </ul>
           </div>

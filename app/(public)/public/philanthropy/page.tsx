@@ -2,411 +2,660 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import NewsletterSection from "../../_components/newsletter-section";
-import {
-  FaHeart,
-  FaHandHoldingHeart,
-  FaUsers,
-  FaGraduationCap,
-  FaLightbulb,
-  FaGlobe,
-  FaArrowRight,
-  FaCheckCircle,
-  FaRocket,
-  FaSeedling,
-  FaHandsHelping,
-  FaChartLine,
-  FaEye,
-} from "react-icons/fa";
-import { MdAirplanemodeActive, MdVolunteerActivism } from "react-icons/md";
-
-const coreValues = [
-  {
-    icon: FaUsers,
-    title: "Who We Are",
-    description:
-      "ADH is a group of committed people who believe in the power of community to change lives. We work to create sustainable solutions for poverty and hunger.",
-  },
-  {
-    icon: FaLightbulb,
-    title: "Our Philosophy",
-    description:
-      "Give a man a fish, you help him for a day. Teach a man to fish, you help him for a lifetime. We believe in empowering communities to become self-sufficient and thrive.",
-  },
-  {
-    icon: FaGlobe,
-    title: "Our History",
-    description:
-      "Dewey Egalitarian Village Education, started in 2010, has helped thousands of children and families escape poverty through education and opportunity.",
-  },
-];
-
-const solutionSteps = [
-  {
-    number: "01",
-    title: "Find Communities",
-    description:
-      "Find the community utilizing a simple and completely random method (draw from a deck, weekly by a group of friends, using a dartboard, etc.), and send enough resources to lift every member above the poverty line.",
-  },
-  {
-    number: "02",
-    title: "Track & Measure",
-    description:
-      "Track the results, measure improvements, and repeat the process in a new community. Each new community increases the probability of being contributed to.",
-  },
-  {
-    number: "03",
-    title: "Empower Teachers",
-    description:
-      "We empower teachers to change village and city from the ground, through the experience of others who have gone before them. Real easy steps, real results, real change.",
-  },
-  {
-    number: "04",
-    title: "Connect Communities",
-    description:
-      "We help communities connect with others who have similar goals, so they can share resources, ideas, and support. The income they get is reinvested in more communities.",
-  },
-];
-
-const impactAreas = [
-  {
-    icon: FaGraduationCap,
-    title: "Education",
-    description: "Direct donations to local schools and educational programs",
-  },
-  {
-    icon: FaHandsHelping,
-    title: "Community Support",
-    description: "Supporting teachers and leaders in creating lasting change",
-  },
-  {
-    icon: FaHeart,
-    title: "Humanitarian Causes",
-    description: "Sharing what we contribute to local humanitarian initiatives",
-  },
-  {
-    icon: FaSeedling,
-    title: "Sustainable Growth",
-    description: "Helping communities become self-sustaining and independent",
-  },
-];
 
 const PhilanthropyPage = () => {
   return (
     <div className="min-h-screen bg-[#fafafa]">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-white via-gray-50 to-[#fef2f2]">
-        {/* Decorative Elements */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#AF2322]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#AF2322]/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/4" />
-
-        {/* Subtle grid pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:32px_32px]" />
 
-        <div className="relative app-container py-20 md:py-28">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#AF2322]/10 text-[#AF2322] text-sm font-medium mb-8 border border-[#AF2322]/20">
-              <MdVolunteerActivism />
-              Making a Difference Together
-        </div>
-
-            <h1 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 leading-[1.1] tracking-tight">
-              Philanthropy at
-              <br />
-              <span className="text-[#AF2322]">Fly-Inn</span>
-            </h1>
-
-            <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
-            At FlyInn, we believe in the spirit of collaboration, reaching out
-            to those in need. Through our philanthropy initiatives, we support
-            education, healthcare, and sustainable development, powered
-              sustainably by flying.
-            </p>
-
-            <a
-              href="#transform"
-              className="group border-0 inline-flex items-center gap-3 px-8 py-4 bg-[#AF2322] hover:bg-[#9a1f1e] text-white font-semibold text-lg rounded-xl transition-all duration-300 shadow-lg shadow-[#AF2322]/25 hover:shadow-xl hover:shadow-[#AF2322]/30"
-            >
-              Transform a Life Now
-              <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* What If Section */}
-      <section id="transform" className="relative py-20 md:py-28 bg-white">
-        <div className="app-container">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="inline-block px-4 py-2 rounded-full bg-[#AF2322]/10 text-[#AF2322] text-sm font-semibold mb-6">
-                The Possibility
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 tracking-tight">
-                What If It Were Possible...
-          </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-            To eradicate poverty in eight weeks. To create communities of
-                dignity. To reduce the poor to such a degree that they cease to
-                be poor. Forget how to be poor, and stay free.
-              </p>
-              <ul className="space-y-3 mb-8">
-                {[
-                  "Eradicate poverty in communities",
-                  "Create sustainable change",
-                  "Empower through education",
-                  "Build self-sufficient families",
-                ].map((item, index) => (
-                  <li key={index} className="flex items-center gap-3">
-                    <FaCheckCircle className="text-[#AF2322] flex-shrink-0" />
-                    <span className="text-gray-700">{item}</span>
-                  </li>
-                ))}
-              </ul>
-        </div>
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-          <Image
-            src="/assets/images/philanthropy/section1.jpg"
-                  alt="Transform Lives"
-                  width={600}
-                  height={400}
-                  className="w-full h-auto object-cover"
-          />
-        </div>
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#AF2322]/10 rounded-full blur-2xl" />
-      </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Core Values Section */}
-      <section className="relative py-20 md:py-28 bg-gray-50">
-        <div className="app-container">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-              Our Foundation
-            </h2>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-              Built on principles that drive meaningful change
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {coreValues.map((value, index) => (
-              <div
-                key={index}
-                className="group relative p-8 rounded-2xl bg-white border border-gray-100 hover:border-[#AF2322]/30 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-              >
-                <div className="w-14 h-14 rounded-xl bg-[#AF2322]/10 flex items-center justify-center mb-6">
-                  <value.icon className="text-2xl text-[#AF2322]" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  {value.title}
-            </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {value.description}
-                </p>
+        <div className="relative app-container px-4 mx-auto md:px-12 py-20 md:py-28">
+          <div className="max-w-4xl">
+            <div className="pl-0 md:pl-0">
+              <div className="ml-5">
+                <h1
+                  style={{
+                    fontSize: "40px",
+                    lineHeight: "60px",
+                    fontWeight: "700",
+                    textAlign: "start",
+                  }}
+                >
+                  WHAT IF IT WERE POSSIBLE...
+                </h1>
+                <h6
+                  style={{
+                    fontSize: "24px",
+                    marginTop: "8px",
+                    lineHeight: "36px",
+                    fontWeight: "300",
+                    textAlign: "start",
+                  }}
+                >
+                  To eradicate poverty in eight weeks, To create communities of
+                  giants, To educate the poor to such a degree that they cease
+                  to be poor, Forget how to be poor, And pay it forward…
+                </h6>
+                <Link href="/public/contact-us">
+                  <button
+                    className="fontquick cursor-pointer font-quicksand py-4 px-9 rounded-md flex text-base leading-4 mt-5 border-none font-normal text-white hover:opacity-90 transition-opacity"
+                    style={{
+                      backgroundColor: "#AF2322",
+                    }}
+                  >
+                    Transform A Human Being's Life...
+                  </button>
+                </Link>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* P.E.T.E Section */}
-      <section className="relative py-20 md:py-28 bg-white">
-        <div className="app-container">
-          <div className="text-center mb-14">
-            <span className="inline-block px-4 py-2 rounded-full bg-[#AF2322]/10 text-[#AF2322] text-sm font-semibold mb-6">
-              Our Approach
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-              The P.E.T.E. Solution
-        </h2>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-              Because we care. Because we see 25,000 fellow human beings go
-              hungry every day. That's 15,000,000 people per year.
-            </p>
-      </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {solutionSteps.map((step, index) => (
-              <div
-                key={index}
-                className="group p-6 rounded-xl bg-gray-50 border border-gray-100 hover:border-[#AF2322]/20 transition-all duration-300 hover:shadow-md"
-              >
-                <span className="text-4xl font-black text-[#AF2322]/20 group-hover:text-[#AF2322]/40 transition-colors">
-                  {step.number}
-                </span>
-                <h3 className="text-lg font-bold text-gray-900 mb-3 mt-2">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {step.description}
-          </p>
-        </div>
-            ))}
-      </div>
-        </div>
-      </section>
-
-      {/* Model Section */}
-      <section className="relative py-20 md:py-28 bg-gray-50">
-        <div className="app-container">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative order-2 md:order-1">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-          <Image
-                  src="/assets/images/philanthropy/section6.jpg"
-                  alt="Our Model"
-                  width={600}
-                  height={400}
-                  className="w-full h-auto object-cover"
-          />
-        </div>
-      </div>
-            <div className="order-1 md:order-2">
-              <span className="inline-block px-4 py-2 rounded-full bg-[#AF2322]/10 text-[#AF2322] text-sm font-semibold mb-6">
-                How We Work
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 tracking-tight">
-                Our Model
-        </h2>
-              <p className="text-gray-600 mb-4 leading-relaxed">
-                Our model is to take entire villages, educate them, equip them,
-                and help them escape poverty. From struggle of illness and
-                hunger to thriving, self-sustaining communities.
-              </p>
-              <p className="text-gray-600 mb-4 leading-relaxed">
-                We work with local leaders, teachers, and organizations to
-                identify the most pressing needs and develop sustainable
-                solutions that address the root causes of poverty.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                Change is within the abilities of every person, no matter where
-                we are living or our origins. Education improves quality of life
-                and makes possible a better future for all.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Impact Section */}
+      {/* How P.E.T.E. came to be Section */}
       <section className="relative py-20 md:py-28 bg-white">
-        <div className="app-container">
-          <div className="text-center mb-14">
-            <span className="inline-block px-4 py-2 rounded-full bg-[#AF2322]/10 text-[#AF2322] text-sm font-semibold mb-6">
-              Making a Difference
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-              Our Impact
-            </h2>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-              Your donations and your own FBO events assist with education,
-              training, and providing vital support to our fellow human beings.
-        </p>
-      </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {impactAreas.map((area, index) => (
-              <div
-                key={index}
-                className="group text-center p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:border-[#AF2322]/30 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-              >
-                <div className="w-16 h-16 rounded-full bg-[#AF2322]/10 flex items-center justify-center mb-6 mx-auto">
-                  <area.icon className="text-2xl text-[#AF2322]" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
-                  {area.title}
-                </h3>
-                <p className="text-sm text-gray-600">{area.description}</p>
+        <div className="app-container px-4 mx-auto md:px-12">
+          <h2
+            className="fontquick"
+            style={{
+              fontSize: "28px",
+              lineHeight: "40px",
+              marginBottom: "30px",
+              paddingLeft: "10px",
+              fontFamily: '"Quicksand", sans-serif',
+            }}
+          >
+            How P.E.T.E. came to be.
+          </h2>
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+            <div>
+              <div className="team-photo mb-4">
+                <Image
+                  src="/images/philanthropy/card1.jpg"
+                  alt="Who We Are"
+                  width={400}
+                  height={300}
+                  className="respimg w-full h-auto rounded-lg"
+                />
               </div>
-            ))}
-      </div>
-
-          <div className="mt-12 p-8 rounded-2xl bg-gradient-to-r from-[#AF2322]/5 to-[#AF2322]/10 border border-[#AF2322]/20">
-            <p className="text-center text-gray-700 text-lg leading-relaxed max-w-3xl mx-auto">
-              <span className="font-semibold text-[#AF2322]">
-                Our guiding principle:
-              </span>{" "}
-              Eradication through education—the bedrock of teaching people to
-              fish.
-        </p>
-      </div>
+              <div className="team-info fl-wrap">
+                <h3
+                  style={{
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    fontWeight: "700",
+                    fontFamily: "Quicksand",
+                  }}
+                >
+                  Who We Are
+                </h3>
+                <p
+                  style={{
+                    fontFamily: '"Quicksand", sans-serif',
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    fontWeight: 500,
+                  }}
+                >
+                  AOH is a group of companies focused on eradicating poverty in
+                  the most impoverished areas of the world.
+                  <br />
+                  We work hand in hand with the people of each community we
+                  serve to bring them the education and skills they need to
+                  eradicate poverty in their village within eight weeks through
+                  the use of technology.
+                </p>
+              </div>
+            </div>
+            <div>
+              <div className="team-photo mb-4">
+                <Image
+                  src="/images/philanthropy/card2.jpg"
+                  alt="Our Philosophy"
+                  width={400}
+                  height={300}
+                  className="respimg w-full h-auto rounded-lg"
+                />
+              </div>
+              <div className="team-info fl-wrap">
+                <h3
+                  style={{
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    fontWeight: "700",
+                  }}
+                >
+                  Our Philosophy
+                </h3>
+                <p
+                  style={{
+                    fontFamily: '"Quicksand", sans-serif',
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    fontWeight: 500,
+                  }}
+                >
+                  "Give a man a fish and you feed him for a day. Teach him how
+                  to fish and you feed him for a lifetime." The old proverb is
+                  accredited to Lao Tzu and true to his philosophy, we teach
+                  people to fish. We work hand in hand with the people in the
+                  villages of the most impoverished areas in the world to
+                  eradicate poverty village by village in eight weeks. Our
+                  sustainable and scalable program focuses on empowering each
+                  community to create technology-based services that we help
+                  market.
+                </p>
+              </div>
+            </div>
+            <div>
+              <div className="team-photo mb-4">
+                <Image
+                  src="/images/philanthropy/card3.jpg"
+                  alt="Our History"
+                  width={400}
+                  height={300}
+                  className="respimg w-full h-auto rounded-lg"
+                />
+              </div>
+              <div className="team-info fl-wrap">
+                <h3
+                  style={{
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    fontWeight: "700",
+                  }}
+                >
+                  Our History
+                </h3>
+                <p
+                  style={{
+                    fontFamily: '"Quicksand", sans-serif',
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    fontWeight: 500,
+                  }}
+                >
+                  Poverty Eradication Through Education, P.E.T.E., started in
+                  2010 with the burning desire to reach out to those in need and
+                  give them the tools necessary to succeed, on their own.
+                </p>
+                <p
+                  style={{
+                    fontFamily: '"Quicksand", sans-serif',
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    fontWeight: 500,
+                  }}
+                >
+                  We started three companies to help us reach our goals–an
+                  education company, a short-term rental company, and a food
+                  company. With God's help and guidance, we knew our mission
+                  would succeed.
+                </p>
+                <p
+                  style={{
+                    fontFamily: '"Quicksand", sans-serif',
+                    fontSize: "18px",
+                    lineHeight: "24px",
+                    fontWeight: 500,
+                  }}
+                >
+                  In 2022 we fired ourselves as heads of AOH and welcomed God as
+                  our new CEO. Indeed, we drafted a welcome letter thanking Him
+                  for taking over and submitting to His will and wisdom. A
+                  separate document sets forth our mission to eradicate poverty
+                  and make the Gospel of Jesus Christ available to all who want
+                  to hear the good news.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Vision Section */}
+      {/* Solution: P.E.T.E. Section */}
       <section className="relative py-20 md:py-28 bg-gray-50">
-        <div className="app-container">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="inline-block px-4 py-2 rounded-full bg-[#AF2322]/10 text-[#AF2322] text-sm font-semibold mb-6">
-                Looking Forward
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 tracking-tight">
-                Vision & Mission
-              </h2>
-              <p className="text-gray-600 mb-4 leading-relaxed">
-                See and serve the often yet not-been-yet introduced and to raise
-                human beings thriving, healthy, knowledgeable, well-nourished,
-                well educated, and able to give back to their communities.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                Our vision is global, and is in many circles: homes,
-                communities, ministries, and hearts that have been touched or
-                changed for the better. We are committed to being a catalyst for
-                change, bringing lasting blessings and happiness to other fellow
-                human beings.
-        </p>
-      </div>
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+        <div className="app-container px-4 mx-auto md:px-12">
+          <h2
+            className="fontquick text-center"
+            style={{
+              fontSize: "30px",
+              lineHeight: "60px",
+              marginBottom: "30px",
+              fontWeight: "700",
+            }}
+          >
+            Solution: P.E.T.E.
+          </h2>
+
+          <div className="w-full">
+            <div className="flex flex-wrap justify-center mb-10">
+              <div className="w-full md:w-1/3 p-4">
                 <Image
-                  src="/assets/images/philanthropy/section8.jpg"
-                  alt="Vision & Mission"
-                  width={600}
-                  height={400}
-                  className="w-full h-auto object-cover"
+                  src="/images/philanthropy/card1.jpg"
+                  alt="Why P.E.T.E?"
+                  width={400}
+                  height={300}
+                  className="w-full h-auto rounded-lg"
                 />
               </div>
-              <div className="absolute -top-6 -right-6 w-32 h-32 bg-[#AF2322]/10 rounded-full blur-2xl" />
+              <div className="w-full md:w-1/3 p-4">
+                <div>
+                  <h1
+                    style={{
+                      fontSize: "20px",
+                      lineHeight: "30px",
+                      fontWeight: "700",
+                      textAlign: "start",
+                    }}
+                  >
+                    Why P.E.T.E?
+                  </h1>
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    Because we love humanity. Because we lose 25,000 fellow
+                    human beings to hunger every single day. That's 1,000,000
+                    people every 40 days. That's 9,125,000 people per year. Why
+                    cross our arms when we can do something about it?
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center flex-wrap mb-10">
+              <div className="w-full md:w-1/3 p-4">
+                <div>
+                  <h6
+                    style={{
+                      fontSize: "20px",
+                      lineHeight: "30px",
+                      fontWeight: "700",
+                      textAlign: "start",
+                    }}
+                  >
+                    What is our solution?
+                  </h6>
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    A Simple, two-step process –
+                  </p>
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    1. Take one willing village at a time and completely
+                    transform their lives in eight weeks by giving them the
+                    education, skills, and tools they need to succeed. Instill
+                    in them the desire to pay it forward.
+                  </p>
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    2. Enroll the community members in the possibility of being
+                    contributing volunteers to teach members of other villages,
+                    paying it forward.
+                  </p>
+                </div>
+              </div>
+
+              <div className="w-full md:w-1/3 p-4">
+                <Image
+                  src="/images/philanthropy/card2.jpg"
+                  alt="Our Solution"
+                  width={400}
+                  height={300}
+                  className="w-full h-auto rounded-lg"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-center flex-wrap mb-10">
+              <div className="w-full md:w-1/3 p-4">
+                <Image
+                  src="/images/philanthropy/card3.jpg"
+                  alt="Solution Specifics"
+                  width={400}
+                  height={300}
+                  className="w-full h-auto rounded-lg mb-4"
+                />
+              </div>
+              <div className="w-full md:w-1/3 p-4">
+                <div>
+                  <h6
+                    style={{
+                      fontSize: "20px",
+                      lineHeight: "30px",
+                      fontWeight: "700",
+                      textAlign: "start",
+                    }}
+                  >
+                    Solution Specifics
+                  </h6>
+                  <p>
+                    1: We present our program to the entire village and show
+                    them, through the experience of others who have gone before
+                    them, how easily poverty is eradicated village by village,
+                    community by community{" "}
+                  </p>
+                  <p>
+                    2: When they accept, they embark on their journey with our
+                    guidance and assistance. We work with the people hand in
+                    hand to create the following:
+                  </p>
+
+                  <p style={{ marginLeft: "20px" }}>
+                    a. Healthcare – we bring several doctors to begin caring for
+                    the ill
+                  </p>
+                  <p style={{ marginLeft: "20px" }}>
+                    b. Housing – we bring several contractors to begin
+                    construction of safe homes, schools, clinics, and any other
+                    necessary buildings. This includes solar energy since these
+                    remote villages do not have access to power. It also
+                    includes water wells. It also includes satellite internet
+                    access. It also includes security systems so the products we
+                    initially (and subsequently) bring in are not stolen. This
+                    is all built by the people with our physical and financial
+                    assistance and training{" "}
+                  </p>
+                  <p style={{ marginLeft: "20px" }}>
+                    c. Education – we bring several teachers, depending on the
+                    size of the village, to begin training the people in the
+                    necessary skills to raise them out of poverty in eight weeks
+                  </p>
+                  <p style={{ marginLeft: "20px" }}>
+                    d. Work –
+                    <br />
+                    <p style={{ marginLeft: "20px" }}>
+                      {" "}
+                      i: We begin a partnership with them in which we teach them
+                      how to use simple cameras. We will teach them how to
+                      record and edit videos that they will send to us to
+                      broadcast and market. 100% of the profit their videos
+                      produce goes to their income and the betterment of their
+                      village
+                      <br />
+                      ii. We begin a partnership with them in which they learn
+                      how to trade stocks online. 100% of the profits are
+                      reinvested into their village
+                      <br />
+                      iii. We begin any other partnerships that are conducive to
+                      the betterment of their situation.
+                    </p>
+                  </p>
+                  <p>
+                    They will eventually be weaned off our assistance and be
+                    able to stand on their own, proud, and free from the bondage
+                    of poverty. The income we help them make provides OPTIONS
+                    for them so they may then be able to follow their own worthy
+                    pursuits and dreams and not have to do the work we provided
+                    for them at first. We will extend microloans so they can
+                    begin businesses of their own. Again, 100% of the profit
+                    produced from these loans will be reinvested in their
+                    village
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center flex-wrap mb-10">
+              <div className="w-full md:w-1/3 p-4">
+                <div>
+                  <h6
+                    style={{
+                      fontSize: "20px",
+                      lineHeight: "30px",
+                      fontWeight: "700",
+                      textAlign: "start",
+                    }}
+                  >
+                    Our Model
+                  </h6>
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    Our model is to train entire villages, one at a time. We
+                    train the people, educate them, teach them English (the
+                    language of business and technology), teach them technology,
+                    and teach them skills that are immediately marketable–skills
+                    that immediately produce an income even while they are still
+                    being trained and learning. We also teach them the mindset
+                    and philosophy that it takes to succeed financially–the very
+                    mindset and philosophy that helped us succeed.
+                  </p>
+                  <br />
+
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    Most importantly, we preach of our savior, Jesus Christ. We
+                    do not make our assistance predicated upon whether they will
+                    learn of him or not. We simply make the education available.
+                    We hope that the joy they see in us is contagious enough
+                    that they are curious to learn about Him.
+                  </p>
+                  <br />
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    Then arises in them a desire to pay it forward.
+                  </p>
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    We firmly believe we will be able to eradicate poverty among
+                    the willing in our lifetime. Education transforms quality of
+                    life and makes possible a productive, enriched, future free
+                    from the bondage of poverty and full of options.
+                  </p>
+                </div>
+              </div>
+              <div className="w-full md:w-1/3 p-4">
+                <Image
+                  src="/images/philanthropy/card1.jpg"
+                  alt="Our Model"
+                  width={400}
+                  height={300}
+                  className="w-full h-auto rounded-lg"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-center flex-wrap mb-10">
+              <div className="w-full md:w-1/3 p-4">
+                <Image
+                  src="/images/philanthropy/card2.jpg"
+                  alt="Entrepreneurship"
+                  width={400}
+                  height={300}
+                  className="w-full h-auto rounded-lg"
+                />
+              </div>
+
+              <div className="w-full md:w-1/3 p-4">
+                <div>
+                  <h6
+                    style={{
+                      fontSize: "20px",
+                      lineHeight: "30px",
+                      fontWeight: "700",
+                      textAlign: "start",
+                    }}
+                  >
+                    Entrepreneurship
+                  </h6>
+
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    We believe that the best way to transform a poor village
+                    into a prosperous one is through entrepreneurship. We help
+                    develop our mentees' entrepreneurship so they become
+                    independent, not beneficiaries, and no longer continue to
+                    rely on outside support. Thanks to satellite internet
+                    connections and solar power, we can help people in the most
+                    remote villages.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center flex-wrap mb-10">
+              <div className="w-full md:w-1/3 p-4">
+                <div>
+                  <h6
+                    style={{
+                      fontSize: "20px",
+                      lineHeight: "30px",
+                      fontWeight: "700",
+                      textAlign: "start",
+                    }}
+                  >
+                    Impact
+                  </h6>
+                  <div>
+                    <p className="lato_family" style={{ fontWeight: "300" }}>
+                      We contribute our companies' earnings in the following
+                      ways:
+                    </p>
+                    <ul>
+                      <li style={{ marginTop: "9px" }}>
+                        10% immediately goes to the aid of the people we serve.
+                      </li>
+                      <li style={{ marginTop: "9px" }}>
+                        37% is allocated for taxes.
+                      </li>
+                      <li style={{ marginTop: "9px" }}>
+                        All costs associated with running our companies.
+                      </li>
+                      <li style={{ marginTop: "9px" }}>
+                        Aggressive company growth to increase income, thereby
+                        increasing what we contribute to our humanitarian
+                        causes.
+                      </li>
+                      <li style={{ marginTop: "9px" }}>
+                        All additional income is donated to P.E.T.E.
+                      </li>
+                    </ul>
+                    <br />
+                    <p className="lato_family" style={{ fontWeight: "300" }}>
+                      In addition, every dollar we receive in the form of
+                      donations or fundraising goes directly to the aid of the
+                      people we serve. We do not use it for salaries or for any
+                      other purpose, as our salaries and all our other expenses
+                      are paid for by our companies' earnings.
+                    </p>
+                    <br />
+                    <p className="lato_family" style={{ fontWeight: "300" }}>
+                      Your donations and ours cover all costs associated with
+                      educating, training, and providing vital support to our
+                      fellow human beings in the most remote areas of our
+                      planet.
+                    </p>
+                    <br />
+                    <p className="lato_family" style={{ fontWeight: "300" }}>
+                      We are in the business of Poverty Eradication Through
+                      Education–the business of Teaching People to Fish.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full md:w-1/3 p-4">
+                <Image
+                  src="/images/philanthropy/card3.jpg"
+                  alt="Impact"
+                  width={400}
+                  height={300}
+                  className="w-full h-auto rounded-lg"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-center flex-wrap mb-10">
+              <div className="w-full md:w-1/3 p-4">
+                <Image
+                  src="/images/philanthropy/card1.jpg"
+                  alt="Vision and Mission"
+                  width={400}
+                  height={300}
+                  className="w-full h-auto rounded-lg"
+                />
+              </div>
+
+              <div className="w-full md:w-1/3 p-4">
+                <div>
+                  <h6
+                    style={{
+                      fontSize: "20px",
+                      lineHeight: "30px",
+                      fontWeight: "700",
+                      textAlign: "start",
+                    }}
+                  >
+                    Vision and Mission
+                  </h6>
+
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    We dream of the day when we see poverty eradicated and our
+                    fellow human beings thriving, healthy, knowledgeable,
+                    well-nourished, well-clothed, and well-sheltered.
+                  </p>
+
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    We dream of a day when the poorest and most remote
+                    communities are brought to the level of income they need to
+                    independently and ongoingly thrive.
+                  </p>
+
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    We dream of a day in which educated, and in many cases newly
+                    literate, community members join hands with us to pay it
+                    forward to other communities and together we join hands to
+                    make that happen.
+                  </p>
+
+                  <p className="lato_family" style={{ fontWeight: "300" }}>
+                    We dream of a day when we see leaders emerging to bring
+                    Bible teachings and happiness to their fellow human beings.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Final CTA Section */}
-      <section className="relative py-20 md:py-28 overflow-hidden bg-gradient-to-br from-[#AF2322] via-[#c93a39] to-[#AF2322]">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:40px_40px]" />
-        </div>
-
-        <div className="relative app-container">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">
-              Ready to Make a Difference?
-            </h2>
-            <p className="text-lg text-white/80 mb-10 leading-relaxed">
-              Join our mission to uplift lives by partnering with
-              aviation-focused causes. Every mile we travel can help make a
-              meaningful impact.
-            </p>
-
-            <a
-              href="#transform"
-              className="group inline-flex border-0 items-center gap-3 px-10 py-5 bg-white hover:bg-gray-50 text-[#AF2322] font-bold text-xl rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
-            >
-              Transform a Life Now
-              <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-        </div>
+      <section
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "5px",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "100px",
+          paddingBottom: "80px",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "30px",
+            fontWeight: "700",
+          }}
+        >
+          What if…
+        </h1>
+        <p>
+          The journey of a lifetime begins with a single step. Join hands with
+          us and let's do this together…
+        </p>
+        <Link href="/public/contact-us">
+          <button
+            className="fontquick cursor-pointer font-quicksand py-4 px-9 rounded-md flex text-base leading-4 mt-5 border-none font-normal text-white hover:opacity-90 transition-opacity"
+            style={{
+              backgroundColor: "#AF2322",
+            }}
+          >
+            Transform A Human Being's Life...
+          </button>
+        </Link>
       </section>
 
       {/* Newsletter Section */}
-      <NewsletterSection />
+      <section className="bg-gray-100 mt-20">
+        <div className="app-container py-12">
+          <NewsletterSection />
+        </div>
+      </section>
     </div>
   );
 };

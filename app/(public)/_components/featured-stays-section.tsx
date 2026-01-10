@@ -46,7 +46,7 @@ const FeaturedStaysSection = () => {
   const [comparedItems, setComparedItems] = useState<number[]>([]);
 
   // Fetch featured stays from API
-  const { data: featuredStaysData, isLoading } = useApiGet({
+  const { data: featuredStaysData, isLoading, error: apiError } = useApiGet({
     endpoint: "/api/stays/featured",
     queryKey: ["featured-stays"],
   });
@@ -125,6 +125,41 @@ const FeaturedStaysSection = () => {
           </div>
           <div className="flex justify-center items-center py-20">
             <Spin size="large" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Show error message if API fails
+  if (apiError) {
+    const errorMessage = 
+      (apiError as any)?.response?.data?.message || 
+      (apiError as any)?.message || 
+      "Unable to load featured stays. Please try again later.";
+    
+    return (
+      <section className="bg-white py-16">
+        <div className="app-container">
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 md:text-4xl mb-1">
+              Our <span className="text-[#AF2322]">Featured</span> Stays
+            </h2>
+            <p className="text-gray-600 max-w-2xl">
+              Discover premium properties near major airports, perfect for
+              aviation travelers
+            </p>
+          </div>
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="text-center max-w-md">
+              <p className="text-gray-500 mb-4">{errorMessage}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-2 bg-[#AF2322] text-white rounded-lg hover:bg-[#8A1C1C] transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
           </div>
         </div>
       </section>

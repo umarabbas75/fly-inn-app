@@ -46,17 +46,12 @@ const BrandColumn = () => {
             />
           </Link>
         </div>
-        <span className="font-bold text-xl tracking-wider text-[#AF2322]">
-          {" "}
-          {/* Brand name in original primary color */}
-          FLY-INN
-        </span>
       </div>
       <p className="text-gray-600 text-sm leading-relaxed">
         {" "}
         {/* Adjusted text color for readability */}
-        Enabling aviation enthusiasts to explore and experience unique stays
-        near airstrips worldwide.
+        We empower aviation enthusiasts to book and host lodging, transportation
+        and more!
       </p>
       <div>
         <p className="mb-3 text-sm font-bold text-gray-800">

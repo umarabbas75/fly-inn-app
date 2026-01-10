@@ -41,22 +41,55 @@ export async function proxyToBackend(
     );
   }
 
+  const fullUrl = `${process.env.NEXT_PUBLIC_API_URI}${endpoint}`;
+  const requestMethod = options.method || "GET";
+  const requestHeaders = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+    ...options.headers,
+  };
+
+  // Log request details
+  console.log("\n========== BFF PROXY REQUEST ==========");
+  console.log("📍 External API URL:", fullUrl);
+  console.log("🔧 Method:", requestMethod);
+  console.log("📋 Headers:", {
+    ...requestHeaders,
+    Authorization: `Bearer ${accessToken.substring(0, 20)}...`, // Sanitized
+  });
+  if (options.body) {
+    console.log("📦 Request Body:", JSON.stringify(options.body, null, 2));
+  }
+  console.log("=======================================\n");
+
   try {
     // Make request to external API with token
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URI}${endpoint}`,
-      {
-        method: options.method || "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-          ...options.headers,
-        },
-        body: options.body ? JSON.stringify(options.body) : undefined,
-        cache: "no-store", // Don't cache authenticated requests
-      }
+    const response = await fetch(fullUrl, {
+      method: requestMethod,
+      headers: requestHeaders,
+      body: options.body ? JSON.stringify(options.body) : undefined,
+      cache: "no-store", // Don't cache authenticated requests
+    });
+
+    // Log response details
+    console.log("\n========== BFF PROXY RESPONSE ==========");
+    console.log("📍 External API URL:", fullUrl);
+    console.log("✅ Status Code:", response.status);
+    console.log("✅ Status Text:", response.statusText);
+    console.log(
+      "📋 Response Headers:",
+      Object.fromEntries(response.headers.entries())
     );
-    console.log("endpoint", `${process.env.NEXT_PUBLIC_API_URI}${endpoint}`);
+
+    // Get response text first to check if it's empty
+    const responseText = await response.text();
+    console.log("📄 Response Body Length:", responseText.length);
+    console.log("📄 Response Body Preview:", responseText.substring(0, 500));
+    if (responseText.length > 500) {
+      console.log("📄 Response Body (Full):", responseText);
+    }
+    console.log("========================================\n");
+
     // If unauthorized, session may be invalid
     if (response.status === 401) {
       return Response.json(
@@ -65,14 +98,107 @@ export async function proxyToBackend(
       );
     }
 
-    // Return response as-is
-    const data = await response.json();
+    // If response is empty, return appropriate error
+    if (!responseText || responseText.trim().length === 0) {
+      console.error(
+        "❌ BFF Proxy Error: Empty response from",
+        fullUrl,
+        `Status: ${response.status}`
+      );
+
+      // Provide user-friendly error message based on status code
+      let errorMessage =
+        "The service is temporarily unavailable. Please try again later.";
+      if (response.status === 500) {
+        errorMessage =
+          "Our servers are experiencing issues. Please try again in a few moments.";
+      } else if (response.status === 503) {
+        errorMessage =
+          "The service is temporarily unavailable. Please try again later.";
+      } else if (response.status === 404) {
+        errorMessage = "The requested resource was not found.";
+      }
+
+      return Response.json(
+        {
+          error: "Backend Error",
+          message: errorMessage,
+          statusCode: response.status,
+          endpoint: endpoint,
+        },
+        { status: response.status || 500 }
+      );
+    }
+
+    // Try to parse JSON
+    let data;
+    try {
+      data = JSON.parse(responseText);
+      console.log("✅ Successfully parsed JSON response");
+    } catch (parseError) {
+      console.error(
+        "❌ BFF Proxy Error: Invalid JSON response from",
+        fullUrl,
+        `Response: ${responseText.substring(0, 200)}`,
+        `Status: ${response.status}`,
+        `Parse Error: ${parseError}`
+      );
+      return Response.json(
+        {
+          error: "Backend Error",
+          message:
+            "The server returned an invalid response. Please try again later.",
+          statusCode: response.status,
+          endpoint: endpoint,
+        },
+        { status: response.status || 500 }
+      );
+    }
 
     return Response.json(data, { status: response.status });
   } catch (error) {
-    console.error("BFF Proxy Error:", error);
+    console.error("\n❌❌❌ BFF PROXY FETCH ERROR ❌❌❌");
+    console.error("📍 External API URL:", fullUrl);
+    console.error("🔧 Method:", requestMethod);
+    console.error(
+      "❌ Error Type:",
+      error instanceof Error ? error.constructor.name : typeof error
+    );
+    console.error(
+      "❌ Error Message:",
+      error instanceof Error ? error.message : String(error)
+    );
+    console.error(
+      "❌ Error Stack:",
+      error instanceof Error ? error.stack : "No stack trace"
+    );
+
+    // Check for specific error types
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      console.error("🚨 Likely Issue: Network error or CORS issue");
+    }
+    if (error instanceof Error && error.message.includes("CORS")) {
+      console.error("🚨 Likely Issue: CORS policy violation");
+    }
+    console.error("=====================================\n");
+
+    // Provide user-friendly error message based on error type
+    let errorMessage =
+      "Unable to connect to the server. Please check your connection and try again.";
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      errorMessage =
+        "Network error: Unable to reach the server. Please check your internet connection.";
+    } else if (error instanceof Error && error.message.includes("CORS")) {
+      errorMessage =
+        "Connection error: Please contact support if this persists.";
+    }
+
     return Response.json(
-      { error: "Server error", message: "Failed to process request" },
+      {
+        error: "Connection Error",
+        message: errorMessage,
+        endpoint: endpoint,
+      },
       { status: 500 }
     );
   }
@@ -87,43 +213,156 @@ export async function proxyToBackendPublic(
   endpoint: string,
   options: ProxyOptions = {}
 ) {
+  const fullUrl = `${process.env.NEXT_PUBLIC_API_URI}${endpoint}`;
+  const requestMethod = options.method || "GET";
+
+  // Log request details
+  console.log("\n========== BFF PUBLIC PROXY REQUEST ==========");
+  console.log("📍 External API URL:", fullUrl);
+  console.log("🔧 Method:", requestMethod);
+  console.log("📋 Headers:", {
+    "Content-Type": "application/json",
+    ...options.headers,
+  });
+  if (options.body) {
+    const bodyPreview =
+      options.body instanceof FormData
+        ? "[FormData]"
+        : JSON.stringify(options.body, null, 2);
+    console.log("📦 Request Body:", bodyPreview);
+  }
+  console.log("==============================================\n");
+
   try {
     // Make request to external API without authentication
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URI}${endpoint}`,
-      {
-        method: options.method || "GET",
-        headers: {
-          "Content-Type": "application/json",
-          ...options.headers,
-        },
-        body: options.body
-          ? options.body instanceof FormData
-            ? options.body
-            : JSON.stringify(options.body)
-          : undefined,
-      }
+    const response = await fetch(fullUrl, {
+      method: requestMethod,
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+      body: options.body
+        ? options.body instanceof FormData
+          ? options.body
+          : JSON.stringify(options.body)
+        : undefined,
+    });
+
+    // Log response details
+    console.log("\n========== BFF PUBLIC PROXY RESPONSE ==========");
+    console.log("📍 External API URL:", fullUrl);
+    console.log("✅ Status Code:", response.status);
+    console.log("✅ Status Text:", response.statusText);
+    console.log(
+      "📋 Response Headers:",
+      Object.fromEntries(response.headers.entries())
     );
+
+    // Get response text first
+    const responseText = await response.text();
+    console.log("📄 Response Body Length:", responseText.length);
+    console.log("📄 Response Body Preview:", responseText.substring(0, 500));
+    if (responseText.length > 500) {
+      console.log("📄 Response Body (Full):", responseText);
+    }
+    console.log("===============================================\n");
 
     // Handle non-OK responses
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({
-        error: "Request failed",
-        message: `External API returned ${response.status} ${response.statusText}`,
-      }));
+      let errorData;
+      try {
+        errorData = JSON.parse(responseText);
+      } catch {
+        // Provide user-friendly error message based on status code
+        let errorMessage =
+          "The service is temporarily unavailable. Please try again later.";
+        if (response.status === 500) {
+          errorMessage =
+            "Our servers are experiencing issues. Please try again in a few moments.";
+        } else if (response.status === 503) {
+          errorMessage =
+            "The service is temporarily unavailable. Please try again later.";
+        } else if (response.status === 404) {
+          errorMessage = "The requested resource was not found.";
+        }
+
+        errorData = {
+          error: "Backend Error",
+          message: errorMessage,
+          statusCode: response.status,
+          endpoint: endpoint,
+        };
+      }
       return Response.json(errorData, { status: response.status });
     }
 
-    // Return response as-is
-    const data = await response.json();
+    // Try to parse JSON
+    let data;
+    try {
+      data = JSON.parse(responseText);
+      console.log("✅ Successfully parsed JSON response");
+    } catch (parseError) {
+      console.error(
+        "❌ BFF Public Proxy Error: Invalid JSON response from",
+        fullUrl,
+        `Response: ${responseText.substring(0, 200)}`,
+        `Parse Error: ${parseError}`
+      );
+      return Response.json(
+        {
+          error: "Backend Error",
+          message:
+            "The server returned an invalid response. Please try again later.",
+          statusCode: response.status,
+          endpoint: endpoint,
+        },
+        { status: response.status || 500 }
+      );
+    }
+
     return Response.json(data, { status: response.status });
   } catch (error) {
-    console.error("BFF Public Proxy Error:", error);
+    console.error("\n❌❌❌ BFF PUBLIC PROXY FETCH ERROR ❌❌❌");
+    console.error("📍 External API URL:", fullUrl);
+    console.error("🔧 Method:", requestMethod);
+    console.error(
+      "❌ Error Type:",
+      error instanceof Error ? error.constructor.name : typeof error
+    );
+    console.error(
+      "❌ Error Message:",
+      error instanceof Error ? error.message : String(error)
+    );
+    console.error(
+      "❌ Error Stack:",
+      error instanceof Error ? error.stack : "No stack trace"
+    );
+
+    // Check for specific error types
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      console.error("🚨 Likely Issue: Network error or CORS issue");
+    }
+    if (error instanceof Error && error.message.includes("CORS")) {
+      console.error("🚨 Likely Issue: CORS policy violation");
+    }
+    console.error("==========================================\n");
+
+    // Provide user-friendly error message based on error type
+    let errorMessage =
+      "Unable to connect to the server. Please check your connection and try again.";
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      errorMessage =
+        "Network error: Unable to reach the server. Please check your internet connection.";
+    } else if (error instanceof Error && error.message.includes("CORS")) {
+      errorMessage =
+        "Connection error: Please contact support if this persists.";
+    }
+
     return Response.json(
       {
-        error: "Server error",
-        message:
-          error instanceof Error ? error.message : "Failed to process request",
+        error: "Connection Error",
+        message: errorMessage,
+        endpoint: endpoint,
       },
       { status: 500 }
     );

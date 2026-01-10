@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import React from "react";
-import { FaBuilding, FaBullhorn } from "react-icons/fa";
+import { FaHome, FaBullhorn } from "react-icons/fa";
 
 const SocialLinks = () => {
   // Social media data with links and colors
@@ -40,12 +40,12 @@ const SocialLinks = () => {
   return (
     <div className="bg-gray-900 py-2 md:py-3">
       <div className="app-container">
-        {/* Mobile: Only Directory and Advertise buttons */}
+        {/* Mobile: Only Become a Host and Advertise buttons */}
         <div className="flex md:hidden items-center justify-center gap-3">
-          <Link href="/public/business-directory">
+          <Link href="/public/become-a-host/list-space">
             <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-medium rounded-full transition-all duration-200 border border-white/20">
-              <FaBuilding className="text-[10px]" />
-              Directory
+              <FaHome className="text-[10px]" />
+              Become a Host
             </button>
           </Link>
           <Link href="/public/advertise">
@@ -83,12 +83,12 @@ const SocialLinks = () => {
           {/* Divider */}
           <div className="h-5 w-px bg-gray-700" />
 
-          {/* Directory and Advertise buttons */}
+          {/* Become a Host and Advertise buttons */}
           <div className="flex items-center gap-2">
-            <Link href="/public/business-directory">
+            <Link href="/public/become-a-host/list-space">
               <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-medium rounded-full transition-all duration-200 border border-white/20">
-                <FaBuilding className="text-xs" />
-                Directory
+                <FaHome className="text-xs" />
+                Become a Host
               </button>
             </Link>
             <Link href="/public/advertise">

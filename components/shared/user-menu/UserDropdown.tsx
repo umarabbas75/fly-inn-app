@@ -105,9 +105,9 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ variant = "public" }) => {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild className={menuItemClassName}>
-            <Link href="/public/help">
+            <Link href="/public/advertise">
               <MdHelp className="text-lg" />
-              <span>Help & Support</span>
+              <span>Advertise</span>
             </Link>
           </DropdownMenuItem>
         </>
@@ -337,6 +337,3 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ variant = "public" }) => {
 };
 
 export default UserDropdown;
-
-
-

@@ -169,8 +169,10 @@ export default function Home() {
           filter={selectedFilter}
           stays={selectedFilter === "stays" ? stays : []}
           businesses={selectedFilter === "business" ? filteredBusinesses : []}
-          isLoading={staysLoading}
+          isLoading={staysLoading || businessesLoading}
           onMapVisibilityChange={setIsMapVisible}
+          staysError={staysError}
+          businessesError={businessesError}
         />
 
         {/* Magazine Endorsements */}
@@ -194,7 +196,7 @@ export default function Home() {
         {/* App Promotion Section */}
         {/* <AppPromotionSection /> */}
         {/* 5 Promises Section */}
-        <PromisesSection />
+        {/* <PromisesSection /> */}
         {/* Newsletter Section */}
         <section className="bg-gray-100">
           <div className="app-container py-12">

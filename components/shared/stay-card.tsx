@@ -306,19 +306,19 @@ const StayCard = ({
               const petsCount =
                 stay.no_of_pets || stay.max_pets || stay.pets || 0;
               return petsCount > 0 ? (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="flex items-center gap-1 text-gray-600 cursor-default">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-1 text-gray-600 cursor-default">
                       <FaDog className="text-sm" />
                       <span className="text-xs">{petsCount}</span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-gradient-to-b from-gray-900 to-black text-white text-[10px] px-2.5 py-1.5 border-0 shadow-xl backdrop-blur-sm">
-                    <p className="text-white font-medium">
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className="bg-gradient-to-b from-gray-900 to-black text-white text-[10px] px-2.5 py-1.5 border-0 shadow-xl backdrop-blur-sm">
+                <p className="text-white font-medium">
                       {petsCount} {petsCount === 1 ? "pet" : "pets"}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
+                </p>
+              </TooltipContent>
+            </Tooltip>
               ) : null;
             })()}
           </div>

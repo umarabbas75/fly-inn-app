@@ -15,27 +15,41 @@ const ContactColumn: React.FC = () => {
         <li className="flex items-start">
           <EnvironmentOutlined className="mt-1 mr-3 text-[#AF2322]" />
           <span className="leading-relaxed">
-            123 Aviation Way, Suite 456
+            P.O. Box 270439
             <br />
-            Pilot City, PC 12345
+            Fruitland, UT 84027
           </span>
         </li>
-        <li className="flex items-center">
-          <PhoneOutlined className="mr-3 text-[#AF2322]" />
-          <a
-            href="tel:+15551234567"
-            className="text-gray-600 hover:text-[#AF2322] transition-colors duration-300"
-          >
-            +1 (555) 123-4567
-          </a>
+        <li className="flex items-start">
+          <PhoneOutlined className="mt-1 mr-3 text-[#AF2322]" />
+          <div className="leading-relaxed">
+            <div>
+              <span className="font-semibold">Toll-Free: </span>
+              <a
+                href="tel:+18334359466"
+                className="text-gray-600 hover:text-[#AF2322] transition-colors duration-300"
+              >
+                833-I-Fly-Inn (833-435-9466)
+              </a>
+            </div>
+            <div className="mt-2">
+              <span className="font-semibold">Phone: </span>
+              <a
+                href="tel:+13214359466"
+                className="text-gray-600 hover:text-[#AF2322] transition-colors duration-300"
+              >
+                321-I-Fly-Inn (321-435-9466)
+              </a>
+            </div>
+          </div>
         </li>
         <li className="flex items-center">
           <MailOutlined className="mr-3 text-[#AF2322]" />
           <a
-            href="mailto:info@fly-inn.com"
+            href="mailto:PIC@Fly-Inn.com"
             className="text-gray-600 hover:text-[#AF2322] transition-colors duration-300"
           >
-            info@fly-inn.com
+            PIC@Fly-Inn.com
           </a>
         </li>
       </ul>

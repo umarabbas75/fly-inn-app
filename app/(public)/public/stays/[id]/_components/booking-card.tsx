@@ -301,9 +301,9 @@ const BookingCard = ({ mockListing, isFetching }: BookingCardProps) => {
       // Valid selection
       else {
         setErrorMessage(null);
-        setDatePickerOpen(false);
-        // Update URL to trigger refetch with new dates
-        updateUrlParams(range, guestCounts);
+      setDatePickerOpen(false);
+      // Update URL to trigger refetch with new dates
+      updateUrlParams(range, guestCounts);
       }
     } else {
       // Just updating the from date, clear error
@@ -721,24 +721,24 @@ const BookingCard = ({ mockListing, isFetching }: BookingCardProps) => {
             <DialogDescription>
               <div className="space-y-3 mt-2">
                 <p>Create an account or sign in to complete your reservation</p>
-              </div>
-            </DialogDescription>
-          </DialogHeader>
+            </div>
+              </DialogDescription>
+            </DialogHeader>
           <DialogFooter className="flex gap-3 sm:flex-row sm:justify-end">
             <Button onClick={() => setShowLoginModal(false)} size="middle">
               Cancel
             </Button>
             <Button
               type="primary"
-              onClick={handleLogin}
+                onClick={handleLogin}
               className="bg-[#AF2322] hover:bg-[#9e1f1a] text-sm"
               size="middle"
-            >
+              >
               Sign in
             </Button>
             <Button
               type="primary"
-              onClick={handleSignup}
+                  onClick={handleSignup}
               className="bg-[#AF2322] hover:bg-[#9e1f1a] text-sm"
               size="middle"
             >
