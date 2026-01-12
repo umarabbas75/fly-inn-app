@@ -189,11 +189,6 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
           </Command>
         </PopoverContent>
       </Popover>
-      {!multiple && selectedValues.length > 0 && (
-        <p className="text-xs text-gray-500 mt-1.5">
-          💡 To remove selection, click it again
-        </p>
-      )}
     </div>
   );
 };
