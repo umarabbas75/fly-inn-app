@@ -47,24 +47,26 @@ export default function Header() {
           </Link>
         </div>
         {/* Center Search Bar */}
-        <div className="hidden md:flex items-center justify-between border border-gray-200 rounded-full shadow-md hover:shadow-md transition cursor-pointer relative">
-          <div className="flex items-center group">
-            <DestinationDropdown />
-            <div className="border-l border-gray-300 h-5 group-hover:border-white" />
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center justify-between border border-gray-200 rounded-full shadow-md hover:shadow-md transition cursor-pointer relative">
+            <div className="flex items-center group">
+              <DestinationDropdown />
+              <div className="border-l border-gray-300 h-5 group-hover:border-white" />
+            </div>
+            <TravelDatesDropdown />
+            <div className="border-l border-gray-300 h-5" />
+            {/* <LodgingTypeDropdown /> */}
+            {/* <div className="border-l border-gray-300 h-5" /> */}
+            {/* <PriceDropdown /> */}
+            {/* <div className="border-l border-gray-300 h-5" /> */}
+
+            <AddGuestsDropdown />
+
+            {/* Filters Modal - only show when main filters are applied */}
           </div>
-          <TravelDatesDropdown />
-          <div className="border-l border-gray-300 h-5" />
-          {/* <LodgingTypeDropdown /> */}
-          {/* <div className="border-l border-gray-300 h-5" /> */}
-          {/* <PriceDropdown /> */}
-          {/* <div className="border-l border-gray-300 h-5" /> */}
-
-          <AddGuestsDropdown />
-
-          {/* Filters Modal - only show when main filters are applied */}
           {hasMainFiltersApplied && (
             <>
-              <div className="border-l border-gray-300 h-5" />
+              <div className=" border-gray-300 h-5" />
               <div className="flex-shrink-0 ml-2 md:ml-0">
                 <FiltersModal />
               </div>

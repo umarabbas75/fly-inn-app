@@ -96,7 +96,7 @@ const TravelDatesDropdown = () => {
             selected={selectedRange}
             onSelect={handleSelect}
             numberOfMonths={isMobile ? 1 : 2}
-            // disabled={{ before: today }}
+            disabled={{ before: today }}
             showOutsideDays={false}
             classNames={{
               today: "border-2 border-primary text-primary font-semibold",
