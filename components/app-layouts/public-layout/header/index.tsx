@@ -1,7 +1,9 @@
-import Image from "next/image";
+"use client";
 
+import Image from "next/image";
 import { Button } from "antd";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import DestinationDropdown from "./components/destination-dropdown";
 import TravelDatesDropdown from "./components/travel-dates-dropdown";
 import LodgingTypeDropdown from "./components/lodging-type-dropdown";
@@ -10,8 +12,24 @@ import AddGuestsDropdown from "./components/guest-dropdown";
 import UserInfo from "./components/user-info";
 import GoogleTranslate from "@/components/shared/google-translate";
 import FilterInitializer from "./components/filter-initializer";
+import FiltersModal from "../filter-links/components/filter-modal";
+import { RootState } from "@/redux/store";
 
 export default function Header() {
+  const { destination, dates, guests } = useSelector(
+    (state: RootState) => state.filters
+  );
+
+  // Check if any main filters are applied
+  const hasMainFiltersApplied =
+    !!destination ||
+    !!dates.start ||
+    !!dates.end ||
+    guests.adults > 0 ||
+    guests.children > 0 ||
+    guests.infants > 0 ||
+    guests.pets > 0;
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <FilterInitializer />
@@ -42,8 +60,17 @@ export default function Header() {
           {/* <div className="border-l border-gray-300 h-5" /> */}
 
           <AddGuestsDropdown />
+
+          {/* Filters Modal - only show when main filters are applied */}
+          {hasMainFiltersApplied && (
+            <>
+              <div className="border-l border-gray-300 h-5" />
+              <div className="flex-shrink-0 ml-2 md:ml-0">
+                <FiltersModal />
+              </div>
+            </>
+          )}
         </div>
-        {/* <FilterModal/> */}
 
         {/* Right Icons */}
         <div className="flex items-center space-x-2">

@@ -163,7 +163,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
                   key={option.value}
                   value={option.label}
                   onSelect={() => handleSelect(option.value)}
-                  className="hover:bg-gray-50"
+                  className="hover:bg-gray-50 !text-black data-[selected=true]:!text-black data-[selected]:!text-black"
                 >
                   <FaCheck
                     className={cn(
@@ -173,7 +173,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
                         : "opacity-0"
                     )}
                   />
-                  {option.label}
+                  <span className="!text-black">{option.label}</span>
                 </CommandItem>
               ))}
             </CommandGroup>

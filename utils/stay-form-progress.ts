@@ -307,10 +307,17 @@ export const calculateFormProgress = (formValues: any): FormProgress => {
     "Short-term Cancellation Policy",
     isValueFilled(formValues.cancellation_policy_short)
   );
-  trackField(
-    "Long-term Cancellation Policy",
-    isValueFilled(formValues.cancellation_policy_long)
-  );
+
+  // Long-term cancellation policy is only required if max_day_booking > 28
+  const maxDayBooking = formValues.max_day_booking
+    ? parseFloat(String(formValues.max_day_booking))
+    : 0;
+  if (maxDayBooking >= 28) {
+    trackField(
+      "Long-term Cancellation Policy",
+      isValueFilled(formValues.cancellation_policy_long)
+    );
+  }
 
   // 13. Booking Rules
   trackField("Minimum Days", isValueFilled(formValues.min_day_booking));

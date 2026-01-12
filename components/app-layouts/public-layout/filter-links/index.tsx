@@ -14,7 +14,6 @@ import React, {
   useRef,
   useEffect,
 } from "react";
-import FiltersModal from "./components/filter-modal";
 import { BUSINESS_SUBTYPES } from "@/constants/business";
 import { usePathname } from "next/navigation";
 
@@ -301,11 +300,6 @@ const FilterLinks = () => {
                   );
                 })}
               </div>
-            </div>
-            {/* here show the option to filter by distance from runwany */}
-            {/* Filters Modal */}
-            <div className="flex-shrink-0 ml-2 md:ml-0">
-              <FiltersModal />
             </div>
           </div>
         </div>
