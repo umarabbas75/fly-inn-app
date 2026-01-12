@@ -131,7 +131,7 @@ const FlyInnDifferenceSection = () => {
                     <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-1.5 md:mb-2 group-hover:text-[#AF2322] transition-colors duration-200 line-clamp-2">
                       {feature.title}
                     </h3>
-                    <p className="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed line-clamp-3">
+                    <p className="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed ">
                       {feature.description}
                     </p>
                   </div>
@@ -162,4 +162,3 @@ const FlyInnDifferenceSection = () => {
 };
 
 export default FlyInnDifferenceSection;
-

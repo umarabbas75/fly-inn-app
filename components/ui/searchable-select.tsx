@@ -107,6 +107,29 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
 
   return (
     <div className="w-full">
+      {/* Helper message for multiple selection */}
+      {multiple && selectedValues.length > 0 && (
+        <div className="mb-2.5 transition-all duration-200">
+          <div className="flex items-center gap-2 text-xs bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/60 rounded-lg px-3 py-2 shadow-sm">
+            <svg
+              className="w-4 h-4 text-blue-600 flex-shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span className="text-blue-700 font-medium">
+              To remove a selection, click it again
+            </span>
+          </div>
+        </div>
+      )}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
