@@ -67,8 +67,31 @@ const createBusinessMarkerIcon = (googleMaps: any) => {
   };
 };
 
-// Create white pill-shaped marker icon with price
-const createPriceMarkerIcon = (price: number, googleMaps: any) => {
+// Get color based on distance from runway
+const getDistanceColor = (distance: number | null | undefined): string => {
+  if (distance === null || distance === undefined) {
+    return "#06b6d4"; // Cyan for unknown/over 7 miles
+  }
+
+  const dist = typeof distance === "string" ? parseFloat(distance) : distance;
+
+  if (isNaN(dist)) {
+    return "#06b6d4"; // Cyan for invalid
+  }
+
+  if (dist === 0) return "#22c55e"; // Green
+  if (dist <= 1) return "#eab308"; // Yellow
+  if (dist <= 3) return "#ef4444"; // Red
+  if (dist <= 7) return "#f97316"; // Orange
+  return "#06b6d4"; // Cyan for over 7 miles
+};
+
+// Create colored pill-shaped marker icon with price
+const createPriceMarkerIcon = (
+  price: number,
+  googleMaps: any,
+  backgroundColor: string = "#FFFFFF"
+) => {
   const priceText = `$${price}`;
 
   // Approx character width in px for this font-size
@@ -87,6 +110,10 @@ const createPriceMarkerIcon = (price: number, googleMaps: any) => {
 
   const height = 28;
 
+  // Determine text color based on background (white text for colored backgrounds)
+  const isColoredBackground = backgroundColor !== "#FFFFFF";
+  const textColor = isColoredBackground ? "#FFFFFF" : "#111827";
+
   const svg = `
     <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -96,7 +123,7 @@ const createPriceMarkerIcon = (price: number, googleMaps: any) => {
         </filter>
       </defs>
 
-      <!-- White pill with shadow, no border -->
+      <!-- Colored pill with shadow, no border -->
       <rect
         x="0"
         y="0"
@@ -104,7 +131,7 @@ const createPriceMarkerIcon = (price: number, googleMaps: any) => {
         ry="${height / 2}"
         width="${width}"
         height="${height}"
-        fill="#FFFFFF"
+        fill="${backgroundColor}"
         filter="url(#markerShadow)"
       />
 
@@ -112,10 +139,10 @@ const createPriceMarkerIcon = (price: number, googleMaps: any) => {
       <text
         x="${width / 2}"
         y="${height / 2 + 4}"
-            text-anchor="middle" 
-        fill="#111827"
-            font-size="12" 
-            font-weight="600" 
+        text-anchor="middle" 
+        fill="${textColor}"
+        font-size="12" 
+        font-weight="600" 
         font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
       >
         ${priceText}
@@ -243,7 +270,10 @@ export default function GoogleMapComponent({
       if (!isLoaded || !googleMaps) return undefined;
       if (filter === "stays") {
         const price = item.nightly_price || item.price || 0;
-        return createPriceMarkerIcon(price, googleMaps);
+        // Get distance from runway to determine color
+        const distance = item.airports?.[0]?.distance_from_runway;
+        const backgroundColor = getDistanceColor(distance);
+        return createPriceMarkerIcon(price, googleMaps, backgroundColor);
       }
       // For businesses, use the same white pill style marker
       if (filter === "business") {

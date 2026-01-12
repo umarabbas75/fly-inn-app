@@ -557,9 +557,9 @@ const TermsAndRules: React.FC = () => {
       {childrenAllowed === true && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 mb-4">
           <div className="flex flex-col justify-between">
-            <FieldLabel label="Children Ages (Months)" required={true} />
+            <FieldLabel label="Infant Ages (Months)" required={true} />
             <p className="text-sm text-gray-500 mb-3">
-              Age range for children: {watch("children_ages")?.[0] || 0} -{" "}
+              Age range for infants: {watch("children_ages")?.[0] || 0} -{" "}
               {watch("children_ages")?.[1] || 24} months
             </p>
             <Controller
@@ -589,9 +589,9 @@ const TermsAndRules: React.FC = () => {
           </div>
 
           <div className="flex flex-col justify-between">
-            <FieldLabel label="Infant Ages (Years)" required={true} />
+            <FieldLabel label="Children Ages (Years)" required={true} />
             <p className="text-sm text-gray-500 mb-3">
-              Age range for infants: {watch("infant_ages")?.[0] || 0} -{" "}
+              Age range for children: {watch("infant_ages")?.[0] || 2} -{" "}
               {watch("infant_ages")?.[1] || 17} years
             </p>
             <Controller

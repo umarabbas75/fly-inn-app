@@ -75,7 +75,14 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
         : [...currentValues, selectedValue];
       onValueChange?.(newValues);
     } else {
-      onValueChange?.(selectedValue);
+      // Allow deselecting in single selection mode by clicking the selected option again
+      if (value === selectedValue) {
+        // Deselect if clicking the already selected option
+        onValueChange?.("");
+      } else {
+        // Select new option
+        onValueChange?.(selectedValue);
+      }
       setOpen(false);
     }
   };
@@ -99,87 +106,94 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          disabled={disabled}
-          className={cn(
-            "w-full min-h-10 h-auto justify-between text-sm font-normal bg-white border-gray-300 hover:border-gray-400 hover:bg-white",
-            selectedValues.length === 0 && "text-gray-400",
-            error && "!border-red-500",
-            className
-          )}
-        >
-          <div className="flex flex-wrap gap-1 flex-1 items-center min-w-0 overflow-hidden">
-            {multiple && selectedOptions.length > 0 ? (
-              <div className="flex flex-wrap gap-1">
-                {selectedOptions.map((option) => (
-                  <span
-                    key={option.value}
-                    className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs"
-                  >
-                    {option.label}
-                    <FaTimes
-                      className="h-3 w-3 cursor-pointer hover:text-red-500"
-                      onClick={(e) => handleRemove(e, option.value)}
-                    />
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <span
-                className={cn(
-                  "truncate text-left",
-                  selectedValues.length === 0 ? "text-gray-400" : ""
-                )}
-                title={selectedOptions[0]?.label || placeholder}
-              >
-                {getDisplayText()}
-              </span>
+    <div className="w-full">
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            disabled={disabled}
+            className={cn(
+              "w-full min-h-10 h-auto justify-between text-sm font-normal bg-white border-gray-300 hover:border-gray-400 hover:bg-white",
+              selectedValues.length === 0 && "text-gray-400",
+              error && "!border-red-500",
+              className
             )}
-          </div>
-          <FaChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        className="w-[var(--radix-popover-trigger-width)] p-0 bg-white border-gray-300"
-        align="start"
-      >
-        <Command className="bg-white">
-          {showSearch && (
-            <CommandInput
-              placeholder={searchPlaceholder}
-              className="border-0 border-none"
-            />
-          )}
-          <CommandList className="bg-white">
-            <CommandEmpty>{emptyMessage}</CommandEmpty>
-            <CommandGroup>
-              {options.map((option) => (
-                <CommandItem
-                  key={option.value}
-                  value={option.label}
-                  onSelect={() => handleSelect(option.value)}
-                  className="hover:bg-gray-50 !text-black data-[selected=true]:!text-black data-[selected]:!text-black"
+          >
+            <div className="flex flex-wrap gap-1 flex-1 items-center min-w-0 overflow-hidden">
+              {multiple && selectedOptions.length > 0 ? (
+                <div className="flex flex-wrap gap-1">
+                  {selectedOptions.map((option) => (
+                    <span
+                      key={option.value}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs"
+                    >
+                      {option.label}
+                      <FaTimes
+                        className="h-3 w-3 cursor-pointer hover:text-red-500"
+                        onClick={(e) => handleRemove(e, option.value)}
+                      />
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <span
+                  className={cn(
+                    "truncate text-left",
+                    selectedValues.length === 0 ? "text-gray-400" : ""
+                  )}
+                  title={selectedOptions[0]?.label || placeholder}
                 >
-                  <FaCheck
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      selectedValues.includes(option.value)
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
-                  <span className="!text-black">{option.label}</span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+                  {getDisplayText()}
+                </span>
+              )}
+            </div>
+            <FaChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          className="w-[var(--radix-popover-trigger-width)] p-0 bg-white border-gray-300"
+          align="start"
+        >
+          <Command className="bg-white">
+            {showSearch && (
+              <CommandInput
+                placeholder={searchPlaceholder}
+                className="border-0 border-none"
+              />
+            )}
+            <CommandList className="bg-white">
+              <CommandEmpty>{emptyMessage}</CommandEmpty>
+              <CommandGroup>
+                {options.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    value={option.label}
+                    onSelect={() => handleSelect(option.value)}
+                    className="hover:bg-gray-50 text-black! data-[selected=true]:text-black! "
+                  >
+                    <FaCheck
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        selectedValues.includes(option.value)
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
+                    <span className="text-black!">{option.label}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+      {!multiple && selectedValues.length > 0 && (
+        <p className="text-xs text-gray-500 mt-1.5">
+          💡 To remove selection, click it again
+        </p>
+      )}
+    </div>
   );
 };

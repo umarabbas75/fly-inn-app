@@ -535,7 +535,11 @@ const PricingInformationFields = () => {
           <div className="flex flex-col justify-between">
             <FieldLabel label="City Fee" />
             <p className="text-sm text-gray-500 mb-3">
-              Local city or municipality fee
+              Very rare. Please check with your city to see if they have one. In
+              New York City, for example, Guests pay an occupancy tax of 5.875%
+              along with a flat &apos;hotel unit fee&apos; of $1.50 per unit per
+              day. It is this flat fee that we are referring to when we ask if a
+              City Fee applies. If there isn&apos;t one, leave this blank.
             </p>
             <Controller
               name="city_fee"
@@ -580,8 +584,8 @@ const PricingInformationFields = () => {
           <div className="flex flex-col justify-between">
             <FieldLabel label="Tax Percentage" required={true} />
             <p className="text-sm text-gray-500 mb-3">
-              Local tax rate applied to the total. Required for accurate pricing
-              calculations. Enter 0 if no tax applies.
+              Total of local, state, and lodging tax combined. Required for
+              accurate pricing calculations. Enter 0 if no tax applies.
             </p>
             <Controller
               name="tax_percentage"
