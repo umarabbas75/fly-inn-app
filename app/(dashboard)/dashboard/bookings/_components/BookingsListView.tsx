@@ -442,7 +442,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       {
         title: "Guest",
         key: "guest",
-        width: 200,
+        width: 250,
         render: (_: any, record: Booking) => (
           <div className="flex items-center gap-2">
             {record.guest?.image ? (
@@ -613,7 +613,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       {
         title: "Extra Services $",
         key: "city_fee",
-        width: 130,
+        width: 150,
         sorter: (a: Booking, b: Booking) =>
           Number(a.pricing?.city_fee || 0) - Number(b.pricing?.city_fee || 0),
         render: (_: any, record: Booking) => {
@@ -628,7 +628,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       {
         title: "Cleaning Fee $",
         key: "cleaning_fee",
-        width: 120,
+        width: 140,
         sorter: (a: Booking, b: Booking) =>
           Number(a.pricing?.cleaning_fee || 0) -
           Number(b.pricing?.cleaning_fee || 0),
@@ -644,7 +644,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       {
         title: "Platform Fee $",
         key: "platform_fee",
-        width: 120,
+        width: 140,
         sorter: (a: Booking, b: Booking) =>
           Number(a.pricing?.platform_fee || 0) -
           Number(b.pricing?.platform_fee || 0),
@@ -659,13 +659,27 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       },
       {
         title: "Total Before Tax",
-        key: "total_price",
-        width: 130,
-        sorter: (a: Booking, b: Booking) =>
-          Number(a.pricing?.total_price || 0) -
-          Number(b.pricing?.total_price || 0),
+        key: "total_before_tax",
+        width: 160,
+        sorter: (a: Booking, b: Booking) => {
+          const totalA =
+            Number(a.pricing?.total_price || 0) +
+            Number(a.pricing?.cleaning_fee || 0) +
+            Number(a.pricing?.city_fee || 0) +
+            Number(a.pricing?.platform_fee || 0);
+          const totalB =
+            Number(b.pricing?.total_price || 0) +
+            Number(b.pricing?.cleaning_fee || 0) +
+            Number(b.pricing?.city_fee || 0) +
+            Number(b.pricing?.platform_fee || 0);
+          return totalA - totalB;
+        },
         render: (_: any, record: Booking) => {
-          const amount = record.pricing?.total_price || 0;
+          const amount =
+            Number(record.pricing?.total_price || 0) +
+            Number(record.pricing?.cleaning_fee || 0) +
+            Number(record.pricing?.city_fee || 0) +
+            Number(record.pricing?.platform_fee || 0);
           return (
             <span className="text-xs sm:text-sm font-semibold text-gray-900">
               ${Number(amount).toFixed(2)}
@@ -835,8 +849,397 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
     [isMobile]
   );
 
-  // Guest/Host columns (original layout)
-  const standardColumns = useMemo(
+  // Guest-specific columns with pricing breakdown
+  const guestColumns = useMemo(
+    () => [
+      {
+        title: "ID",
+        dataIndex: "id",
+        key: "id",
+        width: 80,
+        sorter: (a: Booking, b: Booking) => a.id - b.id,
+        render: (id: number) => (
+          <span className="text-xs sm:text-sm font-medium text-gray-900">
+            {id}
+          </span>
+        ),
+      },
+      {
+        title: "Host",
+        key: "host",
+        width: 180,
+        render: (_: any, record: Booking) => (
+          <div>
+            <p className="text-sm font-medium text-gray-900">
+              {record.host?.display_name || "—"}
+            </p>
+          </div>
+        ),
+      },
+      {
+        title: "Date Created",
+        dataIndex: "created_at",
+        key: "created_at",
+        width: 120,
+        sorter: (a: Booking, b: Booking) =>
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+        render: (date: string) => (
+          <span className="text-xs sm:text-sm text-gray-600">
+            {dayjs(date).format("MMM D, YYYY")}
+          </span>
+        ),
+      },
+      {
+        title: "Title",
+        key: "stay_title",
+        width: 250,
+        render: (_: any, record: Booking) => {
+          const image = getStayImage(record);
+          const stayTitle = getStayTitle(record);
+          const location = getStayLocation(record);
+
+          return (
+            <div className="flex items-center gap-3">
+              {image ? (
+                <Image
+                  src={image}
+                  alt="Stay"
+                  width={40}
+                  height={40}
+                  className="rounded-lg object-cover shrink-0"
+                />
+              ) : (
+                <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center shrink-0">
+                  <HomeOutlined className="text-gray-400" />
+                </div>
+              )}
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">
+                  {stayTitle}
+                </p>
+                {location && (
+                  <p className="text-xs text-gray-500 truncate">{location}</p>
+                )}
+              </div>
+            </div>
+          );
+        },
+      },
+      {
+        title: "Check In",
+        dataIndex: "arrival_date",
+        key: "arrival_date",
+        width: 120,
+        sorter: (a: Booking, b: Booking) =>
+          new Date(a.arrival_date).getTime() -
+          new Date(b.arrival_date).getTime(),
+        render: (date: string) => (
+          <span className="text-xs sm:text-sm text-gray-900">
+            {dayjs(date).format("MMM D, YYYY")}
+          </span>
+        ),
+      },
+      {
+        title: "Check Out",
+        dataIndex: "departure_date",
+        key: "departure_date",
+        width: 120,
+        sorter: (a: Booking, b: Booking) =>
+          new Date(a.departure_date).getTime() -
+          new Date(b.departure_date).getTime(),
+        render: (date: string) => (
+          <span className="text-xs sm:text-sm text-gray-900">
+            {dayjs(date).format("MMM D, YYYY")}
+          </span>
+        ),
+      },
+      {
+        title: "Rent $",
+        key: "base_total_price",
+        width: 100,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.base_total_price || 0) -
+          Number(b.pricing?.base_total_price || 0),
+        render: (_: any, record: Booking) => {
+          const amount = record.pricing?.base_total_price || 0;
+          return (
+            <span className="text-xs sm:text-sm text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Add. Guests $",
+        key: "extra_guest_fee",
+        width: 110,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.extra_guest_fee || 0) -
+          Number(b.pricing?.extra_guest_fee || 0),
+        render: (_: any, record: Booking) => {
+          const amount = record.pricing?.extra_guest_fee || 0;
+          return (
+            <span className="text-xs sm:text-sm text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Pet Fee $",
+        key: "pet_fee",
+        width: 100,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.pet_fee || 0) - Number(b.pricing?.pet_fee || 0),
+        render: (_: any, record: Booking) => {
+          const amount = record.pricing?.pet_fee || 0;
+          return (
+            <span className="text-xs sm:text-sm text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Extra Services $",
+        key: "city_fee",
+        width: 150,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.city_fee || 0) - Number(b.pricing?.city_fee || 0),
+        render: (_: any, record: Booking) => {
+          const amount = record.pricing?.city_fee || 0;
+          return (
+            <span className="text-xs sm:text-sm text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Cleaning Fee $",
+        key: "cleaning_fee",
+        width: 140,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.cleaning_fee || 0) -
+          Number(b.pricing?.cleaning_fee || 0),
+        render: (_: any, record: Booking) => {
+          const amount = record.pricing?.cleaning_fee || 0;
+          return (
+            <span className="text-xs sm:text-sm text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Platform Fee $",
+        key: "platform_fee",
+        width: 140,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.platform_fee || 0) -
+          Number(b.pricing?.platform_fee || 0),
+        render: (_: any, record: Booking) => {
+          const amount = record.pricing?.platform_fee || 0;
+          return (
+            <span className="text-xs sm:text-sm text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Total Before Tax",
+        key: "total_before_tax",
+        width: 160,
+        sorter: (a: Booking, b: Booking) => {
+          const totalA =
+            Number(a.pricing?.total_price || 0) +
+            Number(a.pricing?.cleaning_fee || 0) +
+            Number(a.pricing?.city_fee || 0) +
+            Number(a.pricing?.platform_fee || 0);
+          const totalB =
+            Number(b.pricing?.total_price || 0) +
+            Number(b.pricing?.cleaning_fee || 0) +
+            Number(b.pricing?.city_fee || 0) +
+            Number(b.pricing?.platform_fee || 0);
+          return totalA - totalB;
+        },
+        render: (_: any, record: Booking) => {
+          const amount =
+            Number(record.pricing?.total_price || 0) +
+            Number(record.pricing?.cleaning_fee || 0) +
+            Number(record.pricing?.city_fee || 0) +
+            Number(record.pricing?.platform_fee || 0);
+          return (
+            <span className="text-xs sm:text-sm font-semibold text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Taxes $",
+        key: "lodging_tax",
+        width: 100,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.lodging_tax || 0) -
+          Number(b.pricing?.lodging_tax || 0),
+        render: (_: any, record: Booking) => {
+          const amount = record.pricing?.lodging_tax || 0;
+          return (
+            <span className="text-xs sm:text-sm text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Total",
+        key: "grand_total",
+        width: 120,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.grand_total || a.grand_total || 0) -
+          Number(b.pricing?.grand_total || b.grand_total || 0),
+        render: (_: any, record: Booking) => {
+          const total = record.pricing?.grand_total || record.grand_total || 0;
+          return (
+            <span className="text-xs sm:text-sm font-bold text-green-600">
+              ${Number(total).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        width: 140,
+        sorter: (a: Booking, b: Booking) =>
+          (a.status || "").localeCompare(b.status || ""),
+        render: (status: string, record: Booking) => {
+          const isInProgress = isBookingInProgress(record);
+          const statusConfig = getBookingStatusConfig(status);
+          return (
+            <span
+              className={`inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold ${
+                isInProgress
+                  ? "bg-blue-500 text-white"
+                  : `${statusConfig.bgColor} ${statusConfig.textColor}`
+              }`}
+            >
+              {isInProgress ? "In Progress" : statusConfig.text}
+            </span>
+          );
+        },
+      },
+      {
+        title: "Actions",
+        key: "actions",
+        width: isMobile ? 60 : 80,
+        fixed: isMobile ? undefined : ("right" as const),
+        render: (_: any, record: Booking) => {
+          const menuItems = [
+            {
+              key: "view",
+              label: (
+                <Space>
+                  <EyeOutlined />
+                  View Details
+                </Space>
+              ),
+              onClick: () => handleViewDetails(record),
+            },
+            {
+              key: "view-stay",
+              label: (
+                <Space>
+                  <HomeOutlined />
+                  View Stay
+                </Space>
+              ),
+              onClick: () =>
+                window.open(`/public/stays/${record.stay_id}`, "_blank"),
+            },
+          ];
+
+          // Add cancel option if booking can be cancelled and arrival date hasn't passed
+          if (
+            canCancelBooking(record.status as BookingStatus) &&
+            dayjs(record.arrival_date).isAfter(dayjs())
+          ) {
+            menuItems.push({
+              key: "cancel",
+              label: (
+                <Space className="text-red-500">
+                  <CloseCircleOutlined />
+                  Cancel Trip
+                </Space>
+              ),
+              onClick: () => handleCancelBooking(record),
+            });
+          }
+
+          const menuItemClassName =
+            "flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-[rgba(175,35,34,0.08)] hover:text-[#AF2322] focus:bg-[rgba(175,35,34,0.08)] focus:text-[#AF2322] cursor-pointer";
+
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  type="text"
+                  icon={<MoreOutlined />}
+                  size={isMobile ? "small" : "middle"}
+                  className="hover:bg-gray-100"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align={isMobile ? "start" : "end"}
+                className="min-w-[180px] rounded-xl border border-gray-200 bg-white p-1.5 shadow-[0_12px_32px_-12px_rgba(0,0,0,0.25)]"
+                sideOffset={8}
+              >
+                {menuItems.map((item) => {
+                  const labelContent = item.label;
+                  let icon: React.ReactNode = null;
+                  let text: React.ReactNode = null;
+                  let textColor = "";
+
+                  if (React.isValidElement(labelContent)) {
+                    const props = labelContent.props as any;
+                    if (props?.className?.includes("red")) {
+                      textColor = "text-red-500";
+                    }
+                    const children = React.Children.toArray(
+                      props?.children || []
+                    );
+                    icon = children[0];
+                    text = children[1];
+                  }
+
+                  return (
+                    <DropdownMenuItem
+                      key={item.key}
+                      className={`${menuItemClassName} ${textColor}`}
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        item.onClick?.();
+                      }}
+                    >
+                      {icon}
+                      <span>{text}</span>
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        },
+      },
+    ],
+    [isMobile]
+  );
+
+  // Host columns (original layout)
+  const hostColumns = useMemo(
     () => [
       {
         title: "Ref #",
@@ -889,9 +1292,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           );
         },
       },
-      // Guest column - show for host view and admin
-      ...(viewMode === "host" || viewMode === "admin"
-        ? [
+      // Guest column - for host view
             {
               title: "Guest",
               key: "guest",
@@ -926,29 +1327,6 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
                 </div>
               ),
             },
-          ]
-        : []),
-      // Host column - show for guest view and admin
-      ...(viewMode === "guest" || viewMode === "admin"
-        ? [
-            {
-              title: "Host",
-              key: "host",
-              width: 180,
-              render: (_: any, record: Booking) => (
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    {record.host?.display_name || "—"}
-                  </p>
-                  {/* Only show host email to admin, not to guest */}
-                  {viewMode === "admin" && record.host?.email && (
-                    <p className="text-xs text-gray-500">{record.host.email}</p>
-                  )}
-                </div>
-              ),
-            },
-          ]
-        : []),
       {
         title: "Dates",
         key: "dates",
@@ -1188,7 +1566,12 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
   );
 
   // Select the appropriate columns based on view mode
-  const columns = viewMode === "admin" ? adminColumns : standardColumns;
+  const columns =
+    viewMode === "admin"
+      ? adminColumns
+      : viewMode === "guest"
+      ? guestColumns
+      : hostColumns;
 
   // Get bookings array from response
   const bookings = bookingsData?.data || bookingsData?.bookings || [];
@@ -1355,7 +1738,14 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
                 setPageSize(size);
               },
             }}
-            scroll={{ x: viewMode === "admin" ? 2400 : isMobile ? 800 : 1400 }}
+            scroll={{
+              x:
+                viewMode === "admin" || viewMode === "guest"
+                  ? 2400
+                  : isMobile
+                  ? 800
+                  : 1400,
+            }}
             className="ant-table-bookings"
             size={isMobile ? "small" : "middle"}
           />
