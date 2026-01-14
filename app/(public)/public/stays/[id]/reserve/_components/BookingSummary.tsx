@@ -200,7 +200,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
                 <PopoverTrigger asChild>
                   <div className="flex cursor-pointer items-center gap-1.5 text-gray-600 hover:text-gray-900 transition-colors">
                     <span>{guestLabel}</span>
-                    <Info className="h-3.5 w-3.5 text-gray-400" />
+                    <Info className="h-3.5 w-3.5 text-blue-500 hover:text-blue-600 transition-colors" />
                   </div>
                 </PopoverTrigger>
                 <PopoverContent
@@ -297,7 +297,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
                       ${Number(avgNightlyPrice).toFixed(2)} × {nights} night
                       {nights > 1 ? "s" : ""}
                     </span>
-                    <Info className="h-3.5 w-3.5 text-gray-400" />
+                    <Info className="h-3.5 w-3.5 text-blue-500 hover:text-blue-600 transition-colors" />
                   </div>
                 </PopoverTrigger>
                 <PopoverContent
