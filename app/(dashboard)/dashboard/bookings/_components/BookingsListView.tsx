@@ -490,7 +490,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
         title: "Date Created",
         dataIndex: "created_at",
         key: "created_at",
-        width: 120,
+        width: 140,
         sorter: (a: Booking, b: Booking) =>
           new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
         render: (date: string) => (
@@ -582,7 +582,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       {
         title: "Add. Guests $",
         key: "extra_guest_fee",
-        width: 110,
+        width: 130,
         sorter: (a: Booking, b: Booking) =>
           Number(a.pricing?.extra_guest_fee || 0) -
           Number(b.pricing?.extra_guest_fee || 0),
@@ -603,21 +603,6 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           Number(a.pricing?.pet_fee || 0) - Number(b.pricing?.pet_fee || 0),
         render: (_: any, record: Booking) => {
           const amount = record.pricing?.pet_fee || 0;
-          return (
-            <span className="text-xs sm:text-sm text-gray-900">
-              ${Number(amount).toFixed(2)}
-            </span>
-          );
-        },
-      },
-      {
-        title: "Extra Services $",
-        key: "city_fee",
-        width: 150,
-        sorter: (a: Booking, b: Booking) =>
-          Number(a.pricing?.city_fee || 0) - Number(b.pricing?.city_fee || 0),
-        render: (_: any, record: Booking) => {
-          const amount = record.pricing?.city_fee || 0;
           return (
             <span className="text-xs sm:text-sm text-gray-900">
               ${Number(amount).toFixed(2)}
@@ -665,12 +650,10 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           const totalA =
             Number(a.pricing?.total_price || 0) +
             Number(a.pricing?.cleaning_fee || 0) +
-            Number(a.pricing?.city_fee || 0) +
             Number(a.pricing?.platform_fee || 0);
           const totalB =
             Number(b.pricing?.total_price || 0) +
             Number(b.pricing?.cleaning_fee || 0) +
-            Number(b.pricing?.city_fee || 0) +
             Number(b.pricing?.platform_fee || 0);
           return totalA - totalB;
         },
@@ -678,10 +661,24 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           const amount =
             Number(record.pricing?.total_price || 0) +
             Number(record.pricing?.cleaning_fee || 0) +
-            Number(record.pricing?.city_fee || 0) +
             Number(record.pricing?.platform_fee || 0);
           return (
             <span className="text-xs sm:text-sm font-semibold text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "City Fee $",
+        key: "city_fee",
+        width: 150,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.city_fee || 0) - Number(b.pricing?.city_fee || 0),
+        render: (_: any, record: Booking) => {
+          const amount = record.pricing?.city_fee || 0;
+          return (
+            <span className="text-xs sm:text-sm text-gray-900">
               ${Number(amount).toFixed(2)}
             </span>
           );
@@ -880,7 +877,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
         title: "Date Created",
         dataIndex: "created_at",
         key: "created_at",
-        width: 120,
+        width: 140,
         sorter: (a: Booking, b: Booking) =>
           new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
         render: (date: string) => (
@@ -972,7 +969,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       {
         title: "Add. Guests $",
         key: "extra_guest_fee",
-        width: 110,
+        width: 130,
         sorter: (a: Booking, b: Booking) =>
           Number(a.pricing?.extra_guest_fee || 0) -
           Number(b.pricing?.extra_guest_fee || 0),
@@ -993,21 +990,6 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           Number(a.pricing?.pet_fee || 0) - Number(b.pricing?.pet_fee || 0),
         render: (_: any, record: Booking) => {
           const amount = record.pricing?.pet_fee || 0;
-          return (
-            <span className="text-xs sm:text-sm text-gray-900">
-              ${Number(amount).toFixed(2)}
-            </span>
-          );
-        },
-      },
-      {
-        title: "Extra Services $",
-        key: "city_fee",
-        width: 150,
-        sorter: (a: Booking, b: Booking) =>
-          Number(a.pricing?.city_fee || 0) - Number(b.pricing?.city_fee || 0),
-        render: (_: any, record: Booking) => {
-          const amount = record.pricing?.city_fee || 0;
           return (
             <span className="text-xs sm:text-sm text-gray-900">
               ${Number(amount).toFixed(2)}
@@ -1055,12 +1037,10 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           const totalA =
             Number(a.pricing?.total_price || 0) +
             Number(a.pricing?.cleaning_fee || 0) +
-            Number(a.pricing?.city_fee || 0) +
             Number(a.pricing?.platform_fee || 0);
           const totalB =
             Number(b.pricing?.total_price || 0) +
             Number(b.pricing?.cleaning_fee || 0) +
-            Number(b.pricing?.city_fee || 0) +
             Number(b.pricing?.platform_fee || 0);
           return totalA - totalB;
         },
@@ -1068,10 +1048,24 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           const amount =
             Number(record.pricing?.total_price || 0) +
             Number(record.pricing?.cleaning_fee || 0) +
-            Number(record.pricing?.city_fee || 0) +
             Number(record.pricing?.platform_fee || 0);
           return (
             <span className="text-xs sm:text-sm font-semibold text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "City Fee $",
+        key: "city_fee",
+        width: 150,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.city_fee || 0) - Number(b.pricing?.city_fee || 0),
+        render: (_: any, record: Booking) => {
+          const amount = record.pricing?.city_fee || 0;
+          return (
+            <span className="text-xs sm:text-sm text-gray-900">
               ${Number(amount).toFixed(2)}
             </span>
           );
@@ -1291,7 +1285,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
         title: "Date Created",
         dataIndex: "created_at",
         key: "created_at",
-        width: 120,
+        width: 140,
         sorter: (a: Booking, b: Booking) =>
           new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
         render: (date: string) => (
@@ -1383,7 +1377,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       {
         title: "Add. Guests $",
         key: "extra_guest_fee",
-        width: 110,
+        width: 130,
         sorter: (a: Booking, b: Booking) =>
           Number(a.pricing?.extra_guest_fee || 0) -
           Number(b.pricing?.extra_guest_fee || 0),
@@ -1404,21 +1398,6 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           Number(a.pricing?.pet_fee || 0) - Number(b.pricing?.pet_fee || 0),
         render: (_: any, record: Booking) => {
           const amount = record.pricing?.pet_fee || 0;
-          return (
-            <span className="text-xs sm:text-sm text-gray-900">
-              ${Number(amount).toFixed(2)}
-            </span>
-          );
-        },
-      },
-      {
-        title: "Extra Services $",
-        key: "city_fee",
-        width: 150,
-        sorter: (a: Booking, b: Booking) =>
-          Number(a.pricing?.city_fee || 0) - Number(b.pricing?.city_fee || 0),
-        render: (_: any, record: Booking) => {
-          const amount = record.pricing?.city_fee || 0;
           return (
             <span className="text-xs sm:text-sm text-gray-900">
               ${Number(amount).toFixed(2)}
@@ -1466,12 +1445,10 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           const totalA =
             Number(a.pricing?.total_price || 0) +
             Number(a.pricing?.cleaning_fee || 0) +
-            Number(a.pricing?.city_fee || 0) +
             Number(a.pricing?.platform_fee || 0);
           const totalB =
             Number(b.pricing?.total_price || 0) +
             Number(b.pricing?.cleaning_fee || 0) +
-            Number(b.pricing?.city_fee || 0) +
             Number(b.pricing?.platform_fee || 0);
           return totalA - totalB;
         },
@@ -1479,10 +1456,24 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           const amount =
             Number(record.pricing?.total_price || 0) +
             Number(record.pricing?.cleaning_fee || 0) +
-            Number(record.pricing?.city_fee || 0) +
             Number(record.pricing?.platform_fee || 0);
           return (
             <span className="text-xs sm:text-sm font-semibold text-gray-900">
+              ${Number(amount).toFixed(2)}
+            </span>
+          );
+        },
+      },
+      {
+        title: "City Fee $",
+        key: "city_fee",
+        width: 150,
+        sorter: (a: Booking, b: Booking) =>
+          Number(a.pricing?.city_fee || 0) - Number(b.pricing?.city_fee || 0),
+        render: (_: any, record: Booking) => {
+          const amount = record.pricing?.city_fee || 0;
+          return (
+            <span className="text-xs sm:text-sm text-gray-900">
               ${Number(amount).toFixed(2)}
             </span>
           );
@@ -1508,14 +1499,33 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
         title: amountLabel,
         key: "grand_total",
         width: 120,
-        sorter: (a: Booking, b: Booking) =>
-          Number(a.pricing?.grand_total || a.grand_total || 0) -
-          Number(b.pricing?.grand_total || b.grand_total || 0),
+        sorter: (a: Booking, b: Booking) => {
+          // For host view (Earnings), exclude platform_fee and stripe_fee (3%)
+          const grandTotalA = Number(
+            a.pricing?.grand_total || a.grand_total || 0
+          );
+          const grandTotalB = Number(
+            b.pricing?.grand_total || b.grand_total || 0
+          );
+          const platformFeeA = Number(a.pricing?.platform_fee || 0);
+          const platformFeeB = Number(b.pricing?.platform_fee || 0);
+          const stripeFeeA = grandTotalA * 0.03; // 3% processing fee
+          const stripeFeeB = grandTotalB * 0.03; // 3% processing fee
+          const earningsA = grandTotalA - platformFeeA - stripeFeeA;
+          const earningsB = grandTotalB - platformFeeB - stripeFeeB;
+          return earningsA - earningsB;
+        },
         render: (_: any, record: Booking) => {
-          const total = record.pricing?.grand_total || record.grand_total || 0;
+          // For host view (Earnings), exclude platform_fee and stripe_fee (3%)
+          const grandTotal = Number(
+            record.pricing?.grand_total || record.grand_total || 0
+          );
+          const platformFee = Number(record.pricing?.platform_fee || 0);
+          const stripeFee = grandTotal * 0.03; // 3% processing fee
+          const earnings = grandTotal - platformFee - stripeFee;
           return (
             <span className="text-xs sm:text-sm font-bold text-green-600">
-              ${Number(total).toFixed(2)}
+              ${Number(earnings).toFixed(2)}
             </span>
           );
         },

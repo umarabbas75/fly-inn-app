@@ -21,18 +21,18 @@ This document describes the bookings table implementation across Admin, Guest (T
 1. **ID** - Booking ID (80px, sortable)
 2. **Guest** - Guest avatar, name, and email (250px)
 3. **Host** - Host name and email (180px)
-4. **Date Created** - When booking was created (120px, sortable)
+4. **Date Created** - When booking was created (140px, sortable)
 5. **Title** - Property title with image and location (250px)
 6. **Check In** - Arrival date (120px, sortable)
 7. **Check Out** - Departure date (120px, sortable)
 8. **Rent $** - Base total price (100px, sortable)
-9. **Add. Guests $** - Extra guest fees (110px, sortable)
+9. **Add. Guests $** - Extra guest fees (130px, sortable)
 10. **Pet Fee $** - Pet fees (100px, sortable)
-11. **Extra Services $** - City fees (150px, sortable)
-12. **Cleaning Fee $** - Cleaning fees (140px, sortable)
-13. **Platform Fee $** - Platform fees (140px, sortable)
-14. **Total Before Tax** - _Calculated field_ (160px, sortable)
-15. **Taxes $** - Lodging tax (100px, sortable)
+11. **Cleaning Fee $** - Cleaning fees (140px, sortable)
+12. **Platform Fee $** - Platform fees (140px, sortable)
+13. **Total Before Tax** - _Calculated: total_price + cleaning_fee + platform_fee_ (160px, sortable)
+14. **City Fee $** - City/occupancy fees (150px, sortable)
+15. **Taxes $** - Lodging tax (backend calculated: (total_price + platform_fee) × tax_percentage) (100px, sortable)
 16. **Total** - Grand total (120px, sortable)
 17. **Status** - Booking status badge (140px, sortable)
 18. **Payment** - Payment status badge (130px, sortable)
@@ -100,7 +100,7 @@ This document describes the bookings table implementation across Admin, Guest (T
 12. **Platform Fee $** - Platform fees (140px, sortable)
 13. **Total Before Tax** - _Calculated field_ (160px, sortable)
 14. **Taxes $** - Lodging tax (100px, sortable)
-15. **Earnings** - Grand total (120px, sortable)
+15. **Earnings** - Grand total minus platform fee (120px, sortable)
 16. **Status** - Booking status badge (140px, sortable)
 17. **Actions** - Dropdown menu (80px, fixed right)
 
@@ -130,8 +130,43 @@ The backend's `pricing.total_price` field does **NOT** represent "Total Before T
 The frontend **calculates** "Total Before Tax" as:
 
 ```typescript
-Total Before Tax = total_price + cleaning_fee + city_fee + platform_fee
+Total Before Tax = total_price + cleaning_fee + platform_fee
 ```
+
+**Note**: City fee is NOT included in "Total Before Tax" - it's shown as a separate column.
+
+### Lodging Tax (Backend Calculation)
+
+The frontend **displays** the `lodging_tax` value calculated by the backend. The backend calculates it as:
+
+```typescript
+// Backend formula (from stay.service.ts)
+lodging_tax = (total_price + platform_fee) × (tax_percentage / 100)
+```
+
+**Where**:
+
+- `total_price` = `base_total_price + extra_guest_fee + pet_fee`
+- `platform_fee` = `total_price × 0.11` (11%)
+- `tax_percentage` = Property-specific rate set by host (e.g., 9.3%)
+
+**Example**:
+
+```
+total_price    = $150.00
+platform_fee   = $150.00 × 0.11 = $16.50
+tax_percentage = 9.3%
+lodging_tax    = ($150.00 + $16.50) × (9.3 / 100)
+               = $166.50 × 0.093
+               = $15.48
+```
+
+**Key Points**:
+
+- Tax base includes platform fee (taxed on `total_price + platform_fee`)
+- Tax does NOT include cleaning fee or city fee
+- Each property has its own `tax_percentage` set by the host
+- Frontend displays the backend-calculated value (no frontend calculation)
 
 ### Example Calculation
 
@@ -140,16 +175,17 @@ Rent:               $130.00  (base_total_price)
 Add. Guests:        $ 20.00  (extra_guest_fee)
 Pet Fee:            $  0.00  (pet_fee)
 ------------------------
-Backend total_price: $150.00
+Backend total_price: $150.00  (base + extra_guests + pets)
 
 THEN ADD:
 Cleaning Fee:       $ 10.00  (cleaning_fee)
-Extra Services:     $ 11.00  (city_fee)
-Platform Fee:       $ 16.50  (platform_fee)
+Platform Fee:       $ 16.50  (total_price × 11%)
 ------------------------
-Total Before Tax:   $187.50  ← Frontend calculation
+Total Before Tax:   $176.50  ← Frontend calculation
 
-Taxes:              $ 15.48  (lodging_tax)
+City Fee:           $ 11.00  (city_fee - shown separately)
+Taxes:              $ 15.48  (lodging_tax from backend)
+  Calculation:      ($150.00 + $16.50) × 9.3% = $15.48
 ------------------------
 Grand Total:        $202.98  ✓
 ```
@@ -157,8 +193,27 @@ Grand Total:        $202.98  ✓
 ### Verification Formula
 
 ```
-Total Before Tax + Taxes = Grand Total
-$187.50 + $15.48 = $202.98 ✓
+Total Before Tax + City Fee + Taxes = Grand Total
+$176.50 + $11.00 + $15.48 = $202.98 ✓
+```
+
+### Host Earnings Calculation
+
+For **Host view**, the "Earnings" column shows the amount the host actually receives, which excludes platform fees and Stripe processing fees (3%):
+
+```typescript
+Earnings = grand_total - platform_fee - stripe_fee;
+stripe_fee = grand_total * 0.03; // 3% processing fee
+```
+
+**Example**:
+
+```
+Grand Total:        $202.98
+Platform Fee:       $ 16.50
+Stripe Fee (3%):    $  6.09  (3% of $202.98)
+------------------------
+Host Earnings:      $180.39  ← What host receives
 ```
 
 ---
@@ -290,18 +345,18 @@ GET /api/bookings/me/host?page=1&per_page=50
 | ID               | 80px  | Small, just numbers                       |
 | Guest            | 250px | Avatar + name + email                     |
 | Host             | 180px | Name + email (admin) or name only (guest) |
-| Date Created     | 120px | Date format: MMM D, YYYY                  |
+| Date Created     | 140px | Date format: MMM D, YYYY                  |
 | Title/Property   | 250px | Image + title + location                  |
 | Check In         | 120px | Date format: MMM D, YYYY                  |
 | Check Out        | 120px | Date format: MMM D, YYYY                  |
 | Rent $           | 100px | Currency format                           |
-| Add. Guests $    | 110px | Currency format                           |
+| Add. Guests $    | 130px | Currency format                           |
 | Pet Fee $        | 100px | Currency format                           |
-| Extra Services $ | 150px | Wider for longer label                    |
 | Cleaning Fee $   | 140px | Currency format                           |
 | Platform Fee $   | 140px | Currency format                           |
 | Total Before Tax | 160px | **Calculated**, currency format           |
-| Taxes $          | 100px | Currency format                           |
+| City Fee $       | 150px | Currency format                           |
+| Taxes $          | 100px | Lodging tax only                          |
 | Total/Earnings   | 120px | Bold green, currency format               |
 | Status           | 140px | Badge with color coding                   |
 | Payment          | 130px | Badge with color coding (admin only)      |
