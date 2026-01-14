@@ -64,14 +64,14 @@ export default function Header() {
 
             {/* Filters Modal - only show when main filters are applied */}
           </div>
-          {hasMainFiltersApplied && (
+          {/* {hasMainFiltersApplied && (
             <>
               <div className=" border-gray-300 h-5" />
               <div className="flex-shrink-0 ml-2 md:ml-0">
                 <FiltersModal />
               </div>
             </>
-          )}
+          )} */}
         </div>
 
         {/* Right Icons */}

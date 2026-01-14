@@ -20,7 +20,19 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "antd";
-import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
+  ExternalLink,
+  ArrowRight,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/providers/AuthProvider";
@@ -475,21 +487,32 @@ const BookingCard = ({ mockListing, isFetching }: BookingCardProps) => {
     <div className="border border-gray-200 rounded-2xl p-6 mb-6 shadow-xl bg-white sticky top-24 transition-all hover:shadow-2xl">
       {/* Price Header */}
       <div className="flex justify-between items-start mb-4">
-        <div>
-          <h2 className="text-3xl font-bold text-foreground">
-            ${displayPrice.toFixed(2)}{" "}
-            <span className="text-lg font-normal text-gray-500">night</span>
-          </h2>
+        <div className="w-full">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-3xl font-bold text-foreground">
+              ${displayPrice.toFixed(2)}{" "}
+              <span className="text-lg font-normal text-gray-500">
+                avg/night
+              </span>
+            </h2>
+            <button
+              type="button"
+              onClick={handleReserve}
+              className="inline-flex items-center gap-1 border-0 p-0 bg-transparent text-sm text-primary hover:text-primary/80 underline underline-offset-2 decoration-primary/40 hover:decoration-primary transition-all focus:outline-none cursor-pointer"
+              aria-label="View full pricing"
+            >
+              More info
+              <ArrowRight className="h-3 w-3" />
+            </button>
+          </div>
+          <p className="text-xs text-gray-400 mt-1">
+            Avg. rate · Price varies by dates & guests
+          </p>
           {pricingData?.nights && (
             <p className="text-sm text-gray-500 mt-1">
               {pricingData.nights} night{pricingData.nights > 1 ? "s" : ""}
             </p>
           )}
-          {/* {isFetching && (
-            <p className="text-xs text-primary mt-1 animate-pulse">
-              Updating prices...
-            </p>
-          )} */}
         </div>
       </div>
 
@@ -639,13 +662,16 @@ const BookingCard = ({ mockListing, isFetching }: BookingCardProps) => {
       {/* Reserve Button */}
       <button
         onClick={handleReserve}
-        className="w-full h-12 border-0 text-lg font-medium rounded-lg bg-primary text-white hover:bg-primary/90 transition-all transform  shadow-md hover:shadow-lg active:scale-[0.98]"
+        className="w-full h-12 border-0 text-lg font-medium rounded-lg bg-primary text-white hover:bg-primary/90 transition-all transform shadow-md hover:shadow-lg active:scale-[0.98]"
       >
         Reserve
       </button>
 
-      <div className="mt-4 text-center text-sm text-gray-600">
-        You won&apos;t be charged yet
+      <div className="mt-4 text-center space-y-1">
+        <p className="text-sm text-gray-600">You won&apos;t be charged yet</p>
+        <p className="text-xs text-gray-400">
+          Review full pricing on the next page before confirming
+        </p>
       </div>
 
       {/* Price Breakdown */}
