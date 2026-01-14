@@ -36,7 +36,9 @@ import {
   BookingStatus,
   PaymentStatus,
   bookingStatusFilterOptions,
+  paymentStatusFilterOptions,
   getBookingStatusConfig,
+  getPaymentStatusConfig,
   canCancelBooking,
   isBookingInProgress,
 } from "@/constants/bookings";
@@ -144,6 +146,13 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
   const [statusFilter, setStatusFilter] = useState<string | undefined>(
     undefined
   );
+  // Admin-specific filters
+  const [paymentStatusFilter, setPaymentStatusFilter] = useState<
+    string | undefined
+  >(undefined);
+  const [guestIdFilter, setGuestIdFilter] = useState<string>("");
+  const [hostIdFilter, setHostIdFilter] = useState<string>("");
+  const [stayIdFilter, setStayIdFilter] = useState<string>("");
 
   // Detect mobile screens
   useEffect(() => {
@@ -169,6 +178,22 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       params.append("status", statusFilter);
     }
 
+    // Admin-specific filters
+    if (viewMode === "admin") {
+      if (paymentStatusFilter) {
+        params.append("payment_status", paymentStatusFilter);
+      }
+      if (guestIdFilter.trim()) {
+        params.append("guest_id", guestIdFilter.trim());
+      }
+      if (hostIdFilter.trim()) {
+        params.append("host_id", hostIdFilter.trim());
+      }
+      if (stayIdFilter.trim()) {
+        params.append("stay_id", stayIdFilter.trim());
+      }
+    }
+
     return params.toString();
   };
 
@@ -180,7 +205,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       case "host":
         return `/api/bookings/me/host?${buildQueryParams()}`;
       case "admin":
-        return `/api/bookings?${buildQueryParams()}`;
+        return `/api/bookings/admin/all?${buildQueryParams()}`;
       default:
         return `/api/bookings/me/guest?${buildQueryParams()}`;
     }
@@ -200,6 +225,10 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
       pageSize,
       searchTerm,
       statusFilter,
+      // Admin-specific filter keys
+      ...(viewMode === "admin"
+        ? [paymentStatusFilter, guestIdFilter, hostIdFilter, stayIdFilter]
+        : []),
     ],
   });
 
@@ -239,8 +268,23 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
   const handleClearFilters = () => {
     setSearchTerm("");
     setStatusFilter(undefined);
+    // Clear admin-specific filters
+    if (viewMode === "admin") {
+      setPaymentStatusFilter(undefined);
+      setGuestIdFilter("");
+      setHostIdFilter("");
+      setStayIdFilter("");
+    }
     setCurrentPage(1);
   };
+
+  // Check if any admin filter is active
+  const hasAdminFiltersActive =
+    viewMode === "admin" &&
+    (paymentStatusFilter ||
+      guestIdFilter.trim() ||
+      hostIdFilter.trim() ||
+      stayIdFilter.trim());
 
   // Cancel booking mutation
   const { mutate: cancelBooking, isPending: cancellingBooking } =
@@ -579,6 +623,29 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
           );
         },
       },
+      // Payment Status column - show only for admin
+      ...(viewMode === "admin"
+        ? [
+            {
+              title: "Payment",
+              dataIndex: "payment_status",
+              key: "payment_status",
+              width: 130,
+              sorter: (a: Booking, b: Booking) =>
+                (a.payment_status || "").localeCompare(b.payment_status || ""),
+              render: (paymentStatus: string) => {
+                const config = getPaymentStatusConfig(paymentStatus);
+                return (
+                  <span
+                    className={`inline-block px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium ${config.bgColor} ${config.textColor} ${config.borderColor} border`}
+                  >
+                    {config.text}
+                  </span>
+                );
+              },
+            },
+          ]
+        : []),
       {
         title: "Booked On",
         dataIndex: "created_at",
@@ -784,6 +851,68 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
                 showSearch={false}
               />
             </Col>
+
+            {/* Admin-specific filters - hidden for now, will be enabled later */}
+            {/* TODO: Set showAdminFilters to true to enable admin filters */}
+            {viewMode === "admin" && false && (
+              <>
+                <Col xs={24} sm={12} md={6} lg={4}>
+                  <SearchableSelect
+                    value={paymentStatusFilter}
+                    onValueChange={(value) => {
+                      const stringValue = Array.isArray(value)
+                        ? value[0]
+                        : value;
+                      setPaymentStatusFilter(stringValue);
+                      setCurrentPage(1);
+                    }}
+                    options={paymentStatusFilterOptions}
+                    placeholder="Payment status"
+                    showSearch={false}
+                  />
+                </Col>
+                <Col xs={12} sm={6} md={4} lg={3}>
+                  <Input
+                    placeholder="Guest ID"
+                    prefix={<UserOutlined />}
+                    value={guestIdFilter}
+                    onChange={(e) => {
+                      setGuestIdFilter(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    allowClear
+                    size={isMobile ? "middle" : "large"}
+                  />
+                </Col>
+                <Col xs={12} sm={6} md={4} lg={3}>
+                  <Input
+                    placeholder="Host ID"
+                    prefix={<UserOutlined />}
+                    value={hostIdFilter}
+                    onChange={(e) => {
+                      setHostIdFilter(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    allowClear
+                    size={isMobile ? "middle" : "large"}
+                  />
+                </Col>
+                <Col xs={12} sm={6} md={4} lg={3}>
+                  <Input
+                    placeholder="Stay ID"
+                    prefix={<HomeOutlined />}
+                    value={stayIdFilter}
+                    onChange={(e) => {
+                      setStayIdFilter(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    allowClear
+                    size={isMobile ? "middle" : "large"}
+                  />
+                </Col>
+              </>
+            )}
+
             {(searchTerm || statusFilter) && (
               <Col xs={24} sm={24} md={6} lg={4}>
                 <Button
@@ -792,7 +921,7 @@ const BookingsListView: React.FC<BookingsListViewProps> = ({
                   size={isMobile ? "middle" : "large"}
                   className="w-full"
                 >
-                  Clear Filters
+                  Clear
                 </Button>
               </Col>
             )}

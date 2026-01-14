@@ -119,6 +119,17 @@ export const bookingStatusFilterOptions = [
 ];
 
 /**
+ * Payment status filter options for dropdowns (admin use)
+ */
+export const paymentStatusFilterOptions = [
+  { value: PaymentStatus.PENDING, label: "Pending" },
+  { value: PaymentStatus.SUCCEEDED, label: "Succeeded" },
+  { value: PaymentStatus.FAILED, label: "Failed" },
+  { value: PaymentStatus.REQUIRES_ACTION, label: "Requires Action" },
+  { value: PaymentStatus.REFUNDED, label: "Refunded" },
+];
+
+/**
  * Status transition reference (for documentation/validation)
  * 
  * | Action            | status          | payment_status    |
