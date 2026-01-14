@@ -55,6 +55,14 @@ const BookingCard = ({ mockListing, isFetching }: BookingCardProps) => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Helper to parse date string as local date (not UTC)
+  const parseLocalDate = (dateStr: string): Date => {
+    // Parse with dayjs and convert to local date
+    // This ensures "2024-01-14" is treated as local midnight, not UTC midnight
+    const parsed = dayjs(dateStr);
+    return new Date(parsed.year(), parsed.month(), parsed.date());
+  };
+
   // Pre-populate from URL params on mount
   useEffect(() => {
     if (searchParams) {
@@ -64,8 +72,8 @@ const BookingCard = ({ mockListing, isFetching }: BookingCardProps) => {
 
       if (arrivalDate && departureDate) {
         setDateRange({
-          from: new Date(arrivalDate),
-          to: new Date(departureDate),
+          from: parseLocalDate(arrivalDate),
+          to: parseLocalDate(departureDate),
         });
       }
 
@@ -226,22 +234,31 @@ const BookingCard = ({ mockListing, isFetching }: BookingCardProps) => {
     ) {
       // It's an array of BlockedDateRange objects
       blockedDatesData.forEach((range: any) => {
-        const startDate = new Date(range.start_date);
-        const endDate = new Date(range.end_date);
+        // Parse as local dates to avoid timezone issues
+        const startParsed = dayjs(range.start_date);
+        const endParsed = dayjs(range.end_date);
+        const startDate = new Date(
+          startParsed.year(),
+          startParsed.month(),
+          startParsed.date()
+        );
+        const endDate = new Date(
+          endParsed.year(),
+          endParsed.month(),
+          endParsed.date()
+        );
+
         let currentDate = new Date(startDate);
-        currentDate.setHours(0, 0, 0, 0);
-        const endDateNormalized = new Date(endDate);
-        endDateNormalized.setHours(0, 0, 0, 0);
-        while (currentDate <= endDateNormalized) {
+        while (currentDate <= endDate) {
           blockedDatesArray.push(new Date(currentDate));
           currentDate.setDate(currentDate.getDate() + 1);
         }
       });
     } else if (typeof blockedDatesData[0] === "string") {
-      // It's an array of date strings
+      // It's an array of date strings - parse as local dates
       blockedDatesData.forEach((dateStr: string) => {
-        const date = new Date(dateStr);
-        date.setHours(0, 0, 0, 0);
+        const parsed = dayjs(dateStr);
+        const date = new Date(parsed.year(), parsed.month(), parsed.date());
         blockedDatesArray.push(date);
       });
     }
@@ -301,9 +318,9 @@ const BookingCard = ({ mockListing, isFetching }: BookingCardProps) => {
       // Valid selection
       else {
         setErrorMessage(null);
-      setDatePickerOpen(false);
-      // Update URL to trigger refetch with new dates
-      updateUrlParams(range, guestCounts);
+        setDatePickerOpen(false);
+        // Update URL to trigger refetch with new dates
+        updateUrlParams(range, guestCounts);
       }
     } else {
       // Just updating the from date, clear error
@@ -721,24 +738,24 @@ const BookingCard = ({ mockListing, isFetching }: BookingCardProps) => {
             <DialogDescription>
               <div className="space-y-3 mt-2">
                 <p>Create an account or sign in to complete your reservation</p>
-            </div>
-              </DialogDescription>
-            </DialogHeader>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
           <DialogFooter className="flex gap-3 sm:flex-row sm:justify-end">
             <Button onClick={() => setShowLoginModal(false)} size="middle">
               Cancel
             </Button>
             <Button
               type="primary"
-                onClick={handleLogin}
+              onClick={handleLogin}
               className="bg-[#AF2322] hover:bg-[#9e1f1a] text-sm"
               size="middle"
-              >
+            >
               Sign in
             </Button>
             <Button
               type="primary"
-                  onClick={handleSignup}
+              onClick={handleSignup}
               className="bg-[#AF2322] hover:bg-[#9e1f1a] text-sm"
               size="middle"
             >
