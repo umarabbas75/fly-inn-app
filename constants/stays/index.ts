@@ -1461,36 +1461,7 @@ export const addListingValidationSchema = yup.object().shape({
       identifier: yup.string().optional().nullable(),
       name: yup.string().optional().nullable(),
       use: yup.string().optional().nullable(),
-      operation_hours: yup.object().shape({
-        monday: yup.object().shape({
-          open: yup.string().optional().nullable(),
-          close: yup.string().optional().nullable(),
-        }),
-        tuesday: yup.object().shape({
-          open: yup.string().optional().nullable(),
-          close: yup.string().optional().nullable(),
-        }),
-        wednesday: yup.object().shape({
-          open: yup.string().optional().nullable(),
-          close: yup.string().optional().nullable(),
-        }),
-        thursday: yup.object().shape({
-          open: yup.string().optional().nullable(),
-          close: yup.string().optional().nullable(),
-        }),
-        friday: yup.object().shape({
-          open: yup.string().optional().nullable(),
-          close: yup.string().optional().nullable(),
-        }),
-        saturday: yup.object().shape({
-          open: yup.string().optional().nullable(),
-          close: yup.string().optional().nullable(),
-        }),
-        sunday: yup.object().shape({
-          open: yup.string().optional().nullable(),
-          close: yup.string().optional().nullable(),
-        }),
-      }),
+      operation_hours: yup.string().optional().nullable(),
       lighting: yup.boolean().optional().nullable(),
       ctaf_unicom: yup.string().optional().nullable(),
       fuel: yup
@@ -1871,15 +1842,7 @@ export const airportDefaultValues = {
   identifier: null,
   name: null,
   use: null,
-  operation_hours: {
-    monday: { open: null, close: null },
-    tuesday: { open: null, close: null },
-    wednesday: { open: null, close: null },
-    thursday: { open: null, close: null },
-    friday: { open: null, close: null },
-    saturday: { open: null, close: null },
-    sunday: { open: null, close: null },
-  },
+  operation_hours: null,
   helicopter_allowed: false,
   lighting: false, // Changed to number
   ctaf_unicom: null,

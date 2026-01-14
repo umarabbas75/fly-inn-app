@@ -93,7 +93,9 @@ export interface OldListingData {
 /**
  * Converts string number to number, handling null/undefined/empty strings
  */
-function stringToNumber(value: string | number | null | undefined): number | null {
+function stringToNumber(
+  value: string | number | null | undefined
+): number | null {
   if (value === null || value === undefined || value === "") return null;
   if (typeof value === "number") return value;
   const parsed = parseFloat(value);
@@ -106,7 +108,7 @@ function stringToNumber(value: string | number | null | undefined): number | nul
 function numberToBoolean(value: number | boolean | null | undefined): boolean {
   if (typeof value === "boolean") return value;
   if (value === null || value === undefined) return false;
-  return value === 1 || value === true;
+  return value === 1 || (typeof value === "boolean" && value === true);
 }
 
 /**
@@ -168,15 +170,12 @@ export function transformOldListingToFormData(
         identifier: airport.airport_identifier || airport.identifier || null,
         name: airport.airport_name || airport.name || null,
         use: airport.airport_use || airport.use || null,
-        operation_hours: airport.operation_hours || {
-          monday: { open: null, close: null },
-          tuesday: { open: null, close: null },
-          wednesday: { open: null, close: null },
-          thursday: { open: null, close: null },
-          friday: { open: null, close: null },
-          saturday: { open: null, close: null },
-          sunday: { open: null, close: null },
-        },
+        operation_hours:
+          typeof airport.operation_hours === "string"
+            ? airport.operation_hours
+            : airport.operation_hours
+            ? null // If it's an object, convert to null (will need manual entry)
+            : null,
         lighting: numberToBoolean(airport.lighting),
         ctaf_unicom: airport.ctaf_unicom || null,
         fuel: fuel,
@@ -218,8 +217,7 @@ export function transformOldListingToFormData(
 
   // Handle apply_weekend_price - convert "None" to null, "Yes" to "yes", etc.
   const applyWeekendPrice =
-    oldListing.apply_weekend_price === "None" ||
-    !oldListing.apply_weekend_price
+    oldListing.apply_weekend_price === "None" || !oldListing.apply_weekend_price
       ? null
       : oldListing.apply_weekend_price;
 
@@ -268,7 +266,9 @@ export function transformOldListingToFormData(
     nightly_price: stringToNumber(oldListing.nightly_price),
     apply_weekend_price: applyWeekendPrice,
     weekend_nightly_price: stringToNumber(oldListing.weekend_nightly_price),
-    nightly_price_seven_plus: stringToNumber(oldListing.nightly_price_seven_plus),
+    nightly_price_seven_plus: stringToNumber(
+      oldListing.nightly_price_seven_plus
+    ),
     nightly_price_thirty_plus: stringToNumber(
       oldListing.nightly_price_thirty_plus
     ),

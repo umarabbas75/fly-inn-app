@@ -53,24 +53,7 @@ const isValueFilled = (value: any): boolean => {
  * Check if operation hours are complete
  */
 const areOperationHoursComplete = (hours: any): boolean => {
-  if (!hours || typeof hours !== "object") return false;
-
-  const days = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ];
-
-  return days.every((day) => {
-    const dayHours = hours[day];
-    return (
-      dayHours && isValueFilled(dayHours.open) && isValueFilled(dayHours.close)
-    );
-  });
+  return isValueFilled(hours);
 };
 
 /**

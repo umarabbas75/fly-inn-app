@@ -273,48 +273,9 @@ const AirportDetailsSection = ({ airports }: { airports: any }) => {
                             <div>
                               <p className="text-sm text-gray-500">Hours</p>
                               <div className="font-medium text-base text-gray-900 mt-1">
-                                {airport.operation_hours ? (
-                                  typeof airport.operation_hours ===
-                                  "object" ? (
-                                    <div className="space-y-1">
-                                      {Object.entries(
-                                        airport.operation_hours
-                                      ).map(([day, hours]: [string, any]) => {
-                                        let hoursDisplay = "Closed";
-                                        if (hours) {
-                                          if (
-                                            typeof hours === "object" &&
-                                            hours.open &&
-                                            hours.close
-                                          ) {
-                                            hoursDisplay = `${hours.open} - ${hours.close}`;
-                                          } else if (
-                                            typeof hours === "string"
-                                          ) {
-                                            hoursDisplay = hours;
-                                          }
-                                        }
-                                        return (
-                                          <div
-                                            key={day}
-                                            className="flex justify-between text-sm"
-                                          >
-                                            <span className="capitalize text-gray-600">
-                                              {day}:
-                                            </span>
-                                            <span className="text-gray-900">
-                                              {hoursDisplay}
-                                            </span>
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
-                                  ) : (
-                                    <span>{airport.operation_hours}</span>
-                                  )
-                                ) : (
-                                  "24/7"
-                                )}
+                                {typeof airport.operation_hours === "string"
+                                  ? airport.operation_hours
+                                  : "24/7"}
                               </div>
                             </div>
                           </div>
@@ -425,10 +386,8 @@ const AirportDetailsSection = ({ airports }: { airports: any }) => {
                   <p>
                     <strong>CTAF/UNICOM:</strong> {airport.ctaf_unicom || "N/A"}{" "}
                     | <strong>Hours:</strong>{" "}
-                    {airport.operation_hours
-                      ? typeof airport.operation_hours === "string"
-                        ? airport.operation_hours
-                        : "See details"
+                    {typeof airport.operation_hours === "string"
+                      ? airport.operation_hours
                       : "24/7"}
                   </p>
                   {airport.ground_transportation && (

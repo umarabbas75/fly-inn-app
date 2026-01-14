@@ -225,115 +225,31 @@ const AirportInformationFields = () => {
               </div>
             </div>
 
-            {/* Operation Hours - Daily Schedule */}
+            {/* Operation Hours */}
             <div className="col-span-full mb-4 sm:mb-5 md:mb-6">
-              <div className="flex flex-col justify-between mb-3 sm:mb-4">
-                <FieldLabel label=" Operation Hours" required={true} />
-                <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">
-                  Set daily opening and closing times for the airport
-                </p>
-              </div>
-
-              <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                <div className="grid grid-cols-1 gap-2 sm:gap-3">
-                  {[
-                    "monday",
-                    "tuesday",
-                    "wednesday",
-                    "thursday",
-                    "friday",
-                    "saturday",
-                    "sunday",
-                  ].map((day) => (
-                    <div
-                      key={day}
-                      className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 sm:space-x-4 p-2.5 sm:p-3 bg-white rounded border border-gray-300"
-                    >
-                      <div className="w-full sm:w-24 md:w-32 flex-shrink-0">
-                        <span className="text-xs sm:text-sm font-medium text-gray-700 capitalize">
-                          {day}
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 sm:space-x-3 flex-1">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 sm:space-x-2">
-                          <span className="text-[10px] sm:text-xs text-gray-500">
-                            Open:
-                          </span>
-                          <div className="flex flex-col">
-                            <Controller
-                              name={`airports[${index}].operation_hours.${day}.open`}
-                              control={control}
-                              render={({ field }) => (
-                                <Input
-                                  {...field}
-                                  type="time"
-                                  size="small"
-                                  className="w-full sm:w-28 md:w-32"
-                                  placeholder="00:00"
-                                  status={
-                                    airportErrors?.[index]?.operation_hours?.[
-                                      day
-                                    ]?.open
-                                      ? "error"
-                                      : ""
-                                  }
-                                />
-                              )}
-                            />
-                            {airportErrors?.[index]?.operation_hours?.[day]
-                              ?.open && (
-                              <span className="text-[10px] sm:text-xs text-red-500 mt-0.5 sm:mt-1">
-                                {
-                                  airportErrors[index].operation_hours[day].open
-                                    .message
-                                }
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 sm:space-x-2">
-                          <span className="text-[10px] sm:text-xs text-gray-500">
-                            Close:
-                          </span>
-                          <div className="flex flex-col">
-                            <Controller
-                              name={`airports[${index}].operation_hours.${day}.close`}
-                              control={control}
-                              render={({ field }) => (
-                                <Input
-                                  {...field}
-                                  type="time"
-                                  size="small"
-                                  className="w-full sm:w-28 md:w-32"
-                                  placeholder="00:00"
-                                  status={
-                                    airportErrors?.[index]?.operation_hours?.[
-                                      day
-                                    ]?.close
-                                      ? "error"
-                                      : ""
-                                  }
-                                />
-                              )}
-                            />
-                            {airportErrors?.[index]?.operation_hours?.[day]
-                              ?.close && (
-                              <span className="text-[10px] sm:text-xs text-red-500 mt-0.5 sm:mt-1">
-                                {
-                                  airportErrors[index].operation_hours[day]
-                                    .close.message
-                                }
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <FieldLabel label="Operation Hours" required={true} />
+              <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">
+                Enter the airport operation hours (e.g., "Mon-Fri: 6:00 AM -
+                8:00 PM, Sat-Sun: 24/7")
+              </p>
+              <Controller
+                name={`airports[${index}].operation_hours`}
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    placeholder="Enter operation hours"
+                    status={
+                      airportErrors?.[index]?.operation_hours ? "error" : ""
+                    }
+                  />
+                )}
+              />
+              {airportErrors?.[index]?.operation_hours && (
+                <span className="text-xs text-red-500 mt-1">
+                  {airportErrors[index].operation_hours.message}
+                </span>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3 mb-6">
