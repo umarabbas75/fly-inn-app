@@ -1223,7 +1223,7 @@ const BookingDetailsTab = ({
               </span>
             </div>
             {/* Only show host email and phone to host and admin, not to guest */}
-            {(isHost || isAdmin) && (
+            {
               <>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Email</span>
@@ -1240,7 +1240,7 @@ const BookingDetailsTab = ({
                   </div>
                 )}
               </>
-            )}
+            }
           </div>
         </div>
       </div>
